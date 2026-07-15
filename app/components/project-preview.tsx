@@ -1,4 +1,5 @@
 import type { ProjectSlug } from "../lib/projects";
+import { StatusDot } from "./status-dot";
 
 export function ProjectPreview({ type, compact = false }: { type: ProjectSlug; compact?: boolean }) {
   if (type === "casanet") {
@@ -33,7 +34,7 @@ export function ProjectPreview({ type, compact = false }: { type: ProjectSlug; c
       <div className="preview-top"><i /><span>Transfer API</span><small>Operación segura</small></div>
       <div className="transfer-layout">
         <div className="phone-shell"><span>Transferir</span><label>Cuenta destino<i /></label><label>Monto<i className="short" /></label><button>Confirmar transferencia</button></div>
-        <div className="api-trace"><p><i /> POST /transferencias</p><p><i /> validando saldo</p><p><i /> autorización vigente</p><p className="success"><i /> 201 registrada</p></div>
+        <div className="api-trace"><p><i /> POST /transferencias</p><p><i /> validando saldo</p><p><i /> autorización vigente</p><p className="success"><StatusDot size="xs" /> 201 registrada</p></div>
       </div>
     </div>
   );

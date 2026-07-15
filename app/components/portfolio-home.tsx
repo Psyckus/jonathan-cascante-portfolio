@@ -3,15 +3,18 @@
 import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowIcon, CheckIcon, CopyIcon, DownloadIcon, ExternalIcon, TechIcon, type TechType } from "./icons";
+import { ArrowIcon, CheckIcon, CopyIcon, DownloadIcon, ExternalIcon, GitHubIcon, LinkedInIcon, TechIcon, type TechType } from "./icons";
 import { ProjectPreview } from "./project-preview";
+import { EngineeringDecisions, GitHubActivity, InteractiveTerminal, PortfolioStats, WorkProcess } from "./premium-sections";
+import { StatusDot } from "./status-dot";
+import { TechnologyMarquee } from "./technology-marquee";
 import { projects, skillCategories, skills, type Project, type Skill } from "../lib/projects";
 
 const EMAIL = "jonathan.cz141998@gmail.com";
 const navigationSections = ["proyectos", "habilidades", "experiencia", "contacto"] as const;
 const observedSections = ["inicio", ...navigationSections] as const;
 type SectionId = (typeof observedSections)[number];
-const introMessages = ["Inicializando Portfolio...", "Cargando Projectos...", "Conectando APIs...", "Listo."];
+const introMessages = ["Initializing Portfolio...", "Loading Components...", "Loading Projects...", "Loading Skills...", "Done."];
 const learningTopics = [
   { name: "Arquitectura limpia", description: "Separación de responsabilidades y mantenibilidad." },
   { name: "Microservicios", description: "Diseño de servicios independientes y escalables." },
@@ -41,6 +44,23 @@ const beyondContext: Record<(typeof beyondCode)[number]["theme"], string> = {
   cycling: "Movimiento, constancia y claridad para volver con nuevas ideas.",
   nature: "Perspectiva, equilibrio y espacios para observar con calma.",
   learning: "Curiosidad constante para construir soluciones cada vez mejores.",
+};
+
+type SkillPerspective = { choice: string; learning: string; mastery: string };
+const categoryPerspectives: Record<(typeof skillCategories)[number]["id"], SkillPerspective> = {
+  backend: { choice: "Por el control del flujo, el tipado y la facilidad para separar responsabilidades.", learning: "Diseñar contratos claros, aislar reglas de negocio y tratar los errores como parte del producto.", mastery: "Intermedio · aplicación práctica" },
+  frontend: { choice: "Porque permitía construir una interfaz clara sin ocultar el comportamiento real del sistema.", learning: "Diseñar estados predecibles, componentes reutilizables y experiencias responsive.", mastery: "Intermedio · aplicación práctica" },
+  datos: { choice: "Por su ajuste al modelo de información, las consultas y las necesidades de rendimiento del proyecto.", learning: "Modelar pensando en integridad, trazabilidad y costo de cada consulta.", mastery: "Intermedio · aplicación práctica" },
+  herramientas: { choice: "Porque reducía fricción en pruebas, colaboración, documentación o despliegue.", learning: "Automatizar tareas repetibles y mantener un flujo de entrega verificable.", mastery: "Uso habitual en el flujo de trabajo" },
+};
+const skillPerspectiveOverrides: Partial<Record<string, SkillPerspective>> = {
+  Dapper: { choice: "Porque necesitaba consultas SQL explícitas, mapeo liviano y control sobre el rendimiento.", learning: "Optimizar consultas sin mezclar acceso a datos con reglas de negocio.", mastery: "Intermedio · utilizado en Casa Net" },
+  Redis: { choice: "Para sostener sesiones y caché sin aumentar accesos repetitivos a la base de datos.", learning: "Diseñar expiración, renovación y fallbacks para estados distribuidos.", mastery: "Intermedio · utilizado en Casa Net" },
+  SignalR: { choice: "Para entregar actualizaciones en tiempo real con una integración natural en .NET.", learning: "Modelar eventos pequeños y mantener sincronizada la experiencia del usuario.", mastery: "Intermedio · utilizado en Casa Net" },
+  "ASP.NET Core": { choice: "Por su arquitectura modular, seguridad integrada y ecosistema para aplicaciones mantenibles.", learning: "Separar controladores, servicios, repositorios y middleware con responsabilidades claras.", mastery: "Intermedio · múltiples proyectos" },
+  React: { choice: "Para construir interacción mediante componentes reutilizables y estado predecible.", learning: "Componer interfaces sin acoplar la presentación a los datos.", mastery: "Intermedio · portafolio profesional" },
+  TypeScript: { choice: "Para detectar errores antes de ejecutar y mantener contratos claros entre componentes.", learning: "Modelar datos y estados de interfaz con tipos útiles, no decorativos.", mastery: "Intermedio · portafolio profesional" },
+  JWT: { choice: "Para proteger APIs con autenticación desacoplada y contratos verificables.", learning: "Separar identidad, autorización y vigencia de credenciales.", mastery: "Intermedio · APIs de autenticación" },
 };
 
 const heroModes: Record<TechType, { label: string; detail: string; path: string; flow: string[] }> = {
@@ -253,8 +273,8 @@ function IntroOverlay() {
     if (reduced || sessionStorage.getItem("portfolio-intro")) return;
     sessionStorage.setItem("portfolio-intro", "seen");
     const timers = [window.setTimeout(() => setShow(true), 0)];
-    introMessages.forEach((_, index) => timers.push(window.setTimeout(() => setStep(index), index * 210)));
-    timers.push(window.setTimeout(() => setShow(false), 940));
+    introMessages.forEach((_, index) => timers.push(window.setTimeout(() => setStep(index), index * 135)));
+    timers.push(window.setTimeout(() => setShow(false), 760));
     return () => timers.forEach(window.clearTimeout);
   }, [reduced]);
 
@@ -389,6 +409,7 @@ function HeroCode() {
   }, []);
 
   const visibleLines = useMemo(() => snippet.slice(0, chars).split("\n"), [chars, snippet]);
+  const liveLog = phase === "typing" ? `watcher · ${view.file} changed` : phase === "running" ? `request · ${request.method} ${request.endpoint} executing` : `http · ${request.status} · ${request.latency} ms`;
   return (
     <motion.div
       ref={panel}
@@ -413,7 +434,7 @@ function HeroCode() {
           <div className="live-request-bar">
             <span className={`request-method method-${request.method.toLowerCase()}`}>{request.method}</span>
             <code>{request.endpoint}</code>
-            <span className="live-request-state"><i /> Live request</span>
+            <span className="live-request-state"><StatusDot size="xs" /> Live request</span>
             <span className="request-latency"><small>Latency</small><b>{request.latency} ms</b></span>
           </div>
           <div className="live-editor">
@@ -428,8 +449,11 @@ function HeroCode() {
                 ))}
               </AnimatePresence>
             </div>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span className="live-log-entry" key={liveLog} initial={reduced ? false : { opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} exit={reduced ? undefined : { opacity: 0 }} transition={{ duration: .2 }}><i aria-hidden="true" />{liveLog}</motion.span>
+            </AnimatePresence>
             <AnimatePresence>
-              {phase === "response" && <motion.div className={`server-response ${request.tone}`} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 7, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: .28 }}><i /><span>SERVER RESPONSE</span><b>{request.status}</b></motion.div>}
+              {phase === "response" && <motion.div className={`server-response ${request.tone}`} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 7, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: .28 }}><StatusDot tone={request.tone === "warning" ? "warning" : "online"} /><span>SERVER RESPONSE</span><b>{request.status}</b></motion.div>}
             </AnimatePresence>
           </div>
         </div>
@@ -570,6 +594,7 @@ function SkillsExplorer() {
       .filter((category) => category.skills.length > 0);
   }, [filter, query]);
   const selectedCategory = skillCategories.find((category) => category.skills.some((skill) => skill.name === selected.name))?.id ?? "backend";
+  const perspective = skillPerspectiveOverrides[selected.name] ?? categoryPerspectives[selectedCategory];
   const catalogTransitionKey = `${filter}:${query.trim().toLocaleLowerCase("es")}`;
   const changeFilter = (nextFilter: typeof filter) => {
     setFilter(nextFilter);
@@ -606,9 +631,9 @@ function SkillsExplorer() {
           <motion.div
             className="skill-catalog-content"
             key={catalogTransitionKey}
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8, filter: "blur(1.5px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -6, filter: "blur(1px)" }}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -6 }}
             transition={{ duration: reduced ? .1 : .22, ease: [0.22, 1, 0.36, 1] }}
           >
             {visibleCategories.map((category) => {
@@ -630,7 +655,7 @@ function SkillsExplorer() {
         <AnimatePresence mode="wait" initial={false}>
           <motion.div className="skill-detail-copy" key={selected.name} initial={reduced ? { opacity: 0 } : { opacity: 0, x: -7 }} animate={{ opacity: 1, x: 0 }} exit={reduced ? { opacity: 0 } : { opacity: 0, x: 5 }} transition={{ duration: .25 }}>
             <p className="section-kicker">Tecnología seleccionada</p><h3>{selected.name}</h3>
-            <dl><div><dt>Dónde la utilicé</dt><dd>{selected.context}</dd></div><div><dt>Proyecto</dt><dd>{selected.project}</dd></div><div><dt>Para qué la utilicé</dt><dd>{selected.use}</dd></div><div><dt>Nivel de uso</dt><dd>Aplicada en proyectos reales.</dd></div></dl>
+            <dl><div><dt>Dónde la utilicé</dt><dd>{selected.context}</dd></div><div><dt>Proyecto</dt><dd>{selected.project}</dd></div><div><dt>Qué problema resolvió</dt><dd>{selected.use}</dd></div><div><dt>Por qué la elegí</dt><dd>{perspective.choice}</dd></div><div><dt>Qué aprendí</dt><dd>{perspective.learning}</dd></div><div><dt>Nivel aproximado</dt><dd><span className="mastery-indicator"><i /><i /><i /><i /></span>{perspective.mastery}</dd></div></dl>
           </motion.div>
         </AnimatePresence>
         <AnimatePresence mode="wait" initial={false}>
@@ -692,7 +717,6 @@ function TimelineEvent({ item, current }: { item: (typeof journey)[number]; curr
       <span className="timeline-node" aria-hidden="true">
         <i className="timeline-node-core" />
         <i className="timeline-node-wave" />
-        <span className="timeline-burst">{Array.from({ length: 6 }, (_, index) => <i className="timeline-particle" key={index} />)}</span>
       </span>
       <span className="timeline-date">{item.date}</span>
       <div className="timeline-copy"><h3>{item.title}</h3><p>{item.text}</p></div>
@@ -745,7 +769,7 @@ function Timeline() {
         <motion.span className="timeline-rail-progress" style={{ scaleY: reduced ? 1 : smoothProgress }} />
         {!reduced && (
           <motion.span className="timeline-spark" style={{ y: sparkY, opacity: sparkOpacity }}>
-            <i /><span>{Array.from({ length: 4 }, (_, index) => <i key={index} />)}</span>
+            <i />
           </motion.span>
         )}
       </div>
@@ -935,8 +959,8 @@ function Contact() {
         <div className="contact-actions premium-actions">
           <button type="button" className={`button button-primary ${copied ? "success" : ""}`} onClick={copyEmail}>{copied ? <CheckIcon /> : <CopyIcon />}{copied ? "Correo copiado ✓" : "Copiar correo"}</button>
           <a className="button button-secondary" href="/Jonathan-Cascante-CV.pdf" download><DownloadIcon /> Descargar CV</a>
-          <a className="text-link" href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer">LinkedIn <ExternalIcon /></a>
-          <a className="text-link" href="https://github.com/Psyckus" target="_blank" rel="noreferrer">GitHub <ExternalIcon /></a>
+          <a className="text-link platform-link linkedin-link" href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer" aria-label="Abrir perfil de LinkedIn de Jonathan Cascante"><LinkedInIcon /> LinkedIn</a>
+          <a className="text-link platform-link github-link" href="https://github.com/Psyckus" target="_blank" rel="noreferrer" aria-label="Abrir perfil de GitHub de Jonathan Cascante"><GitHubIcon /> GitHub</a>
         </div>
       </Reveal>
     </GlowSurface>
@@ -944,6 +968,8 @@ function Contact() {
 }
 
 export function PortfolioHome() {
+  const [konamiUnlocked, setKonamiUnlocked] = useState(false);
+  const reduced = useReducedMotion();
   useEffect(() => {
     const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
     const lowPower = navigator.hardwareConcurrency <= 4 || (memory !== undefined && memory <= 4);
@@ -951,9 +977,30 @@ export function PortfolioHome() {
     return () => { delete document.documentElement.dataset.motionProfile; };
   }, []);
 
+  useEffect(() => {
+    const sequence = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    let progress = 0;
+    let hideTimer = 0;
+    const handleKey = (event: globalThis.KeyboardEvent) => {
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      progress = key === sequence[progress] ? progress + 1 : key === sequence[0] ? 1 : 0;
+      if (progress !== sequence.length) return;
+      progress = 0;
+      setKonamiUnlocked(true);
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => setKonamiUnlocked(false), 4200);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      window.clearTimeout(hideTimer);
+    };
+  }, []);
+
   return (
     <main>
       <IntroOverlay />
+      <AnimatePresence>{konamiUnlocked && <motion.div className="easter-toast" initial={reduced ? false : { opacity: 0, y: 12, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduced ? undefined : { opacity: 0, y: 7 }} transition={{ duration: reduced ? 0 : .3 }}><StatusDot />Modo desarrollador desbloqueado · +30 enfoque</motion.div>}</AnimatePresence>
       <div className="ambient-particles" aria-hidden="true"><i /><i /><i /><i /><i /></div>
       <Header />
       <GlowSurface className="hero" id="inicio">
@@ -964,7 +1011,7 @@ export function PortfolioHome() {
           <p className="intro">Transformo necesidades reales en productos confiables: backend robusto, interfaces claras y una arquitectura preparada para crecer.</p>
           <div className="hero-actions"><a className="button button-primary" href="#proyectos">Ver proyectos <ArrowIcon /></a><a className="button button-secondary" href="#contacto">Contactarme <ArrowIcon /></a></div>
           <div className="skill-row" aria-label="Tecnologías principales">{[".NET 8", "ASP.NET Core", "C#", "MySQL", "JavaScript"].map((skill) => <span className="skill-chip" key={skill}><i aria-hidden="true" /> {skill}</span>)}</div>
-          <div className="hero-signals" aria-label="Estado profesional"><span><i />Disponible de inmediato</span><span>Abierto a oportunidades</span><span>Backend & APIs</span></div>
+          <div className="hero-signals" aria-label="Estado profesional"><span><StatusDot />Disponible de inmediato</span><span>Abierto a oportunidades</span><span>Backend & APIs</span></div>
         </Reveal>
         <HeroCode />
       </GlowSurface>
@@ -976,18 +1023,25 @@ export function PortfolioHome() {
         <ArchitectureShowcase />
       </GlowSurface>
 
+      <PortfolioStats />
+
       <section className="section profile-section" id="habilidades">
         <Reveal className="section-heading compact"><div><p className="section-kicker">Capacidades</p><h2>De la base de datos a la interfaz.</h2></div><p>Selecciona una tecnología para ver dónde la aplico y qué valor aporta dentro de una solución real.</p></Reveal>
         <Reveal delay={.08}><SkillsExplorer /></Reveal>
+        <TechnologyMarquee />
         <LearningBlock />
+        <EngineeringDecisions />
+        <WorkProcess />
         <div className="academic" id="experiencia">
-          <Reveal className="academic-intro"><p className="section-kicker">Experiencia académica</p><h2>Formación aplicada a escenarios reales.</h2><p>Mi experiencia se ha construido desarrollando soluciones completas, documentando procesos y validando resultados con usuarios reales.</p><div className="availability"><i /> Disponibilidad inmediata</div><div className="academic-badges" aria-label="Competencias aplicadas">{academicBadges.map((badge) => <span key={badge}><b>✓</b>{badge}</span>)}</div></Reveal>
+          <Reveal className="academic-intro"><p className="section-kicker">Experiencia académica</p><h2>Formación aplicada a escenarios reales.</h2><p>Mi experiencia se ha construido desarrollando soluciones completas, documentando procesos y validando resultados con usuarios reales.</p><div className="availability"><StatusDot size="md" /> Disponibilidad inmediata</div><div className="academic-badges" aria-label="Competencias aplicadas">{academicBadges.map((badge) => <span key={badge}><b>✓</b>{badge}</span>)}</div></Reveal>
           <Timeline />
         </div>
         <BeyondCode />
         <Philosophy />
+        <GitHubActivity />
       </section>
 
+      <InteractiveTerminal />
       <Contact />
       <footer className="site-footer"><a className="wordmark" href="#inicio">Jonathan <span>Cascante</span></a><div className="footer-copy"><p>Diseñado y desarrollado por Jonathan Cascante.</p><p>Construido con React, TypeScript y Framer Motion.</p><small>Costa Rica 🇨🇷</small></div><div className="footer-links"><a href="https://github.com/Psyckus" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer">LinkedIn</a></div></footer>
     </main>

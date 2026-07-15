@@ -1,3 +1,5 @@
+import { siGithub } from "simple-icons";
+
 export function ArrowIcon({ size = 20 }: { size?: number }) {
   return <svg aria-hidden="true" viewBox="0 0 24 24" width={size} height={size}><path d="M5 12h13M13 6l6 6-6 6" /></svg>;
 }
@@ -16,6 +18,14 @@ export function CopyIcon() {
 
 export function CheckIcon() {
   return <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path d="m5 12 4 4L19 6" /></svg>;
+}
+
+export function LinkedInIcon({ size = 18 }: { size?: number }) {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" width={size} height={size}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M8 11v5M8 8v.01M12 16v-5m0 2.2c.7-1.5 4-1.6 4 1.3V16" /></svg>;
+}
+
+export function GitHubIcon({ size = 18 }: { size?: number }) {
+  return <svg className="brand-icon" aria-hidden="true" viewBox="0 0 24 24" width={size} height={size}><path d={siGithub.path} /></svg>;
 }
 
 export type TechType = "api" | "db" | "service" | "deploy";

@@ -129,11 +129,41 @@ export const projects: Project[] = [
 export const projectBySlug = (slug: ProjectSlug) =>
   projects.find((project) => project.slug === slug)!;
 
+export type TechnologyIconId =
+  | "api"
+  | "bootstrap"
+  | "database"
+  | "docker"
+  | "dotnet"
+  | "flutter"
+  | "git"
+  | "github"
+  | "hibernate"
+  | "html5"
+  | "css"
+  | "javascript"
+  | "jquery"
+  | "jsonwebtokens"
+  | "mongodb"
+  | "mysql"
+  | "openid"
+  | "openjdk"
+  | "php"
+  | "postman"
+  | "python"
+  | "react"
+  | "redis"
+  | "springboot"
+  | "swagger"
+  | "typescript";
+
 export type Skill = {
   name: string;
   context: string;
   project: string;
   use: string;
+  icon: TechnologyIconId;
+  color: `#${string}`;
   preview?: ProjectSlug;
 };
 
@@ -150,21 +180,21 @@ export const skillCategories: SkillCategory[] = [
     label: "Backend",
     description: "APIs, reglas de negocio, seguridad y servicios empresariales.",
     skills: [
-      { name: "C#", context: "Backend, APIs e integraciones.", project: "Casa Net · Transferencias interbancarias · Lover2023Cuc", use: "Lógica de negocio, servicios, validaciones y endpoints REST.", preview: "api-transferencias" },
-      { name: ".NET 8", context: "Plataformas web empresariales.", project: "Casa Net", use: "Runtime principal para una aplicación MVC moderna, escalable y desplegada.", preview: "casanet" },
-      { name: "ASP.NET Core", context: "Backend y aplicaciones MVC.", project: "Casa Net · APIs en C#", use: "Controladores, servicios, autenticación, middleware y flujos web.", preview: "casanet" },
-      { name: "ASP.NET MVC", context: "Aplicaciones web por capas.", project: "Lover2023Cuc · Proyectos académicos", use: "Separación de responsabilidades mediante modelos, vistas y controladores." },
-      { name: "REST APIs", context: "Integración entre interfaces y servicios.", project: "CCSS · Casa Net · Transferencias interbancarias", use: "Contratos HTTP para consultar, validar y registrar operaciones.", preview: "ccss" },
-      { name: "PHP", context: "Backend web y módulos administrativos.", project: "Módulos de parqueo y multimedia CCSS · Laravel API", use: "Lógica del servidor, reglas operativas, autenticación y acceso a datos.", preview: "ccss" },
-      { name: "Python", context: "Automatización y herramientas técnicas.", project: "Administración remota de servicios · Scripts y APIs", use: "Automatización de procesos, control de servicios Windows/Linux y utilidades." },
-      { name: "Java", context: "Aplicaciones orientadas a objetos.", project: "Sistemas Java y proyectos académicos", use: "Modelado de dominio, lógica empresarial y construcción de servicios." },
-      { name: "Spring Boot", context: "Servicios backend con Java.", project: "Sistemas Java", use: "Creación de APIs, configuración de servicios y arquitectura por capas." },
-      { name: "Entity Framework", context: "Persistencia en aplicaciones .NET.", project: "Aplicaciones ASP.NET Core", use: "ORM para modelar entidades, relaciones y operaciones sobre bases de datos." },
-      { name: "Dapper", context: "Acceso a datos de alto control.", project: "Casa Net", use: "Consultas SQL explícitas, mapeo liviano y repositorios eficientes.", preview: "casanet" },
-      { name: "Hibernate", context: "Persistencia en aplicaciones Java.", project: "Sistemas Java", use: "ORM para mapear entidades y gestionar operaciones de persistencia." },
-      { name: "JWT", context: "Seguridad de APIs.", project: "APIs de autenticación y proyectos web", use: "Emisión y validación de tokens para proteger recursos y sesiones." },
-      { name: "OAuth2", context: "Inicio de sesión e identidad externa.", project: "Casa Net · Integración con Google", use: "Autenticación delegada y acceso seguro mediante proveedores externos.", preview: "casanet" },
-      { name: "SignalR", context: "Comunicación en tiempo real.", project: "Casa Net", use: "Notificaciones instantáneas y actualización de información sin recargar.", preview: "casanet" },
+      { name: "C#", context: "Backend, APIs e integraciones.", project: "Casa Net · Transferencias interbancarias · Lover2023Cuc", use: "Lógica de negocio, servicios, validaciones y endpoints REST.", icon: "dotnet", color: "#9B72E9", preview: "api-transferencias" },
+      { name: ".NET 8", context: "Plataformas web empresariales.", project: "Casa Net", use: "Runtime principal para una aplicación MVC moderna, escalable y desplegada.", icon: "dotnet", color: "#512BD4", preview: "casanet" },
+      { name: "ASP.NET Core", context: "Backend y aplicaciones MVC.", project: "Casa Net · APIs en C#", use: "Controladores, servicios, autenticación, middleware y flujos web.", icon: "dotnet", color: "#7857D9", preview: "casanet" },
+      { name: "ASP.NET MVC", context: "Aplicaciones web por capas.", project: "Lover2023Cuc · Proyectos académicos", use: "Separación de responsabilidades mediante modelos, vistas y controladores.", icon: "dotnet", color: "#7857D9" },
+      { name: "REST APIs", context: "Integración entre interfaces y servicios.", project: "CCSS · Casa Net · Transferencias interbancarias", use: "Contratos HTTP para consultar, validar y registrar operaciones.", icon: "api", color: "#FF8A3D", preview: "ccss" },
+      { name: "PHP", context: "Backend web y módulos administrativos.", project: "Módulos de parqueo y multimedia CCSS · Laravel API", use: "Lógica del servidor, reglas operativas, autenticación y acceso a datos.", icon: "php", color: "#777BB4", preview: "ccss" },
+      { name: "Python", context: "Automatización y herramientas técnicas.", project: "Administración remota de servicios · Scripts y APIs", use: "Automatización de procesos, control de servicios Windows/Linux y utilidades.", icon: "python", color: "#4B8BBE" },
+      { name: "Java", context: "Aplicaciones orientadas a objetos.", project: "Sistemas Java y proyectos académicos", use: "Modelado de dominio, lógica empresarial y construcción de servicios.", icon: "openjdk", color: "#E4EAF2" },
+      { name: "Spring Boot", context: "Servicios backend con Java.", project: "Sistemas Java", use: "Creación de APIs, configuración de servicios y arquitectura por capas.", icon: "springboot", color: "#6DB33F" },
+      { name: "Entity Framework", context: "Persistencia en aplicaciones .NET.", project: "Aplicaciones ASP.NET Core", use: "ORM para modelar entidades, relaciones y operaciones sobre bases de datos.", icon: "dotnet", color: "#8B6DE9" },
+      { name: "Dapper", context: "Acceso a datos de alto control.", project: "Casa Net", use: "Consultas SQL explícitas, mapeo liviano y repositorios eficientes.", icon: "database", color: "#D9A05B", preview: "casanet" },
+      { name: "Hibernate", context: "Persistencia en aplicaciones Java.", project: "Sistemas Java", use: "ORM para mapear entidades y gestionar operaciones de persistencia.", icon: "hibernate", color: "#BCAE79" },
+      { name: "JWT", context: "Seguridad de APIs.", project: "APIs de autenticación y proyectos web", use: "Emisión y validación de tokens para proteger recursos y sesiones.", icon: "jsonwebtokens", color: "#E4EAF2" },
+      { name: "OAuth2", context: "Inicio de sesión e identidad externa.", project: "Casa Net · Integración con Google", use: "Autenticación delegada y acceso seguro mediante proveedores externos.", icon: "openid", color: "#F78C40", preview: "casanet" },
+      { name: "SignalR", context: "Comunicación en tiempo real.", project: "Casa Net", use: "Notificaciones instantáneas y actualización de información sin recargar.", icon: "dotnet", color: "#9B72E9", preview: "casanet" },
     ],
   },
   {
@@ -172,15 +202,15 @@ export const skillCategories: SkillCategory[] = [
     label: "Frontend",
     description: "Interfaces responsive, claras y conectadas con procesos reales.",
     skills: [
-      { name: "HTML5", context: "Estructura semántica de interfaces web.", project: "Casa Net · CCSS · Aplicaciones web", use: "Construcción de vistas accesibles, formularios y contenido estructurado.", preview: "casanet" },
-      { name: "CSS3", context: "Diseño responsive y sistemas visuales.", project: "Casa Net · Dashboards · Portafolio", use: "Layouts, adaptación móvil, estados visuales y microinteracciones.", preview: "casanet" },
-      { name: "JavaScript", context: "Interacción en el navegador.", project: "Casa Net · CCSS · Aplicaciones administrativas", use: "Validaciones, eventos, consumo de APIs y comportamiento dinámico.", preview: "ccss" },
-      { name: "TypeScript", context: "Aplicaciones frontend y componentes React con tipado estático.", project: "Portafolio profesional y proyectos web modernos.", use: "Tipado seguro, mantenibilidad, reducción de errores y mejor organización del código." },
-      { name: "React", context: "Desarrollo de interfaces modernas basadas en componentes.", project: "Portafolio profesional y aplicaciones frontend.", use: "Componentes reutilizables, estado, interacción y construcción de interfaces dinámicas." },
-      { name: "Bootstrap", context: "Interfaces web responsive.", project: "Casa Net · Sistemas administrativos", use: "Componentes, grids, modales y adaptación consistente entre dispositivos.", preview: "casanet" },
-      { name: "jQuery", context: "Flujos administrativos dinámicos.", project: "Casa Net · Módulos CCSS", use: "Eventos, peticiones asíncronas, tablas y manipulación controlada de interfaz.", preview: "ccss" },
-      { name: "Razor", context: "Vistas del ecosistema ASP.NET.", project: "Casa Net", use: "Renderizado de interfaces MVC conectadas con ViewModels y lógica del servidor.", preview: "casanet" },
-      { name: "Flutter", context: "Aplicaciones móviles multiplataforma.", project: "Transferencias interbancarias", use: "Formularios, navegación, diálogos y estados asíncronos en móvil.", preview: "api-transferencias" },
+      { name: "HTML5", context: "Estructura semántica de interfaces web.", project: "Casa Net · CCSS · Aplicaciones web", use: "Construcción de vistas accesibles, formularios y contenido estructurado.", icon: "html5", color: "#E34F26", preview: "casanet" },
+      { name: "CSS3", context: "Diseño responsive y sistemas visuales.", project: "Casa Net · Dashboards · Portafolio", use: "Layouts, adaptación móvil, estados visuales y microinteracciones.", icon: "css", color: "#7A5AF8", preview: "casanet" },
+      { name: "JavaScript", context: "Interacción en el navegador.", project: "Casa Net · CCSS · Aplicaciones administrativas", use: "Validaciones, eventos, consumo de APIs y comportamiento dinámico.", icon: "javascript", color: "#F7DF1E", preview: "ccss" },
+      { name: "TypeScript", context: "Aplicaciones frontend y componentes React con tipado estático.", project: "Portafolio profesional y proyectos web modernos.", use: "Tipado seguro, mantenibilidad, reducción de errores y mejor organización del código.", icon: "typescript", color: "#3178C6" },
+      { name: "React", context: "Desarrollo de interfaces modernas basadas en componentes.", project: "Portafolio profesional y aplicaciones frontend.", use: "Componentes reutilizables, estado, interacción y construcción de interfaces dinámicas.", icon: "react", color: "#61DAFB" },
+      { name: "Bootstrap", context: "Interfaces web responsive.", project: "Casa Net · Sistemas administrativos", use: "Componentes, grids, modales y adaptación consistente entre dispositivos.", icon: "bootstrap", color: "#7952B3", preview: "casanet" },
+      { name: "jQuery", context: "Flujos administrativos dinámicos.", project: "Casa Net · Módulos CCSS", use: "Eventos, peticiones asíncronas, tablas y manipulación controlada de interfaz.", icon: "jquery", color: "#3C9BD7", preview: "ccss" },
+      { name: "Razor", context: "Vistas del ecosistema ASP.NET.", project: "Casa Net", use: "Renderizado de interfaces MVC conectadas con ViewModels y lógica del servidor.", icon: "dotnet", color: "#9B72E9", preview: "casanet" },
+      { name: "Flutter", context: "Aplicaciones móviles multiplataforma.", project: "Transferencias interbancarias", use: "Formularios, navegación, diálogos y estados asíncronos en móvil.", icon: "flutter", color: "#4FC3F7", preview: "api-transferencias" },
     ],
   },
   {
@@ -188,13 +218,13 @@ export const skillCategories: SkillCategory[] = [
     label: "Bases de datos",
     description: "Modelado, consultas, procedimientos, caché y persistencia.",
     skills: [
-      { name: "SQL Server", context: "Persistencia en aplicaciones Microsoft.", project: "Lover2023Cuc · Aplicaciones ASP.NET", use: "Modelado relacional, consultas y operaciones transaccionales." },
-      { name: "MySQL", context: "Persistencia de aplicaciones web.", project: "Casa Net · Sistemas PHP · Laravel API", use: "Diseño relacional, consultas, reportes y soporte de flujos empresariales.", preview: "casanet" },
-      { name: "Oracle Database", context: "Datos institucionales.", project: "Proyecto de graduación CCSS", use: "Persistencia, relaciones y soporte de procesos administrativos.", preview: "ccss" },
-      { name: "Oracle APEX", context: "Desarrollo low-code empresarial.", project: "Proyecto de graduación CCSS", use: "Módulos administrativos, dashboards y flujos conectados con Oracle.", preview: "ccss" },
-      { name: "MongoDB", context: "Persistencia documental.", project: "Prototipo inmobiliario Next.js + Prisma", use: "Almacenamiento flexible de propiedades con estructuras y colecciones complejas." },
-      { name: "Redis", context: "Sesiones y caché distribuida.", project: "Casa Net", use: "Sesiones resilientes, renovación controlada y reducción de accesos repetitivos.", preview: "casanet" },
-      { name: "PL/SQL", context: "Lógica cercana a los datos.", project: "Proyecto de graduación CCSS", use: "Procedimientos, consultas y validaciones dentro del ecosistema Oracle.", preview: "ccss" },
+      { name: "SQL Server", context: "Persistencia en aplicaciones Microsoft.", project: "Lover2023Cuc · Aplicaciones ASP.NET", use: "Modelado relacional, consultas y operaciones transaccionales.", icon: "database", color: "#CC5252" },
+      { name: "MySQL", context: "Persistencia de aplicaciones web.", project: "Casa Net · Sistemas PHP · Laravel API", use: "Diseño relacional, consultas, reportes y soporte de flujos empresariales.", icon: "mysql", color: "#5B9DB5", preview: "casanet" },
+      { name: "Oracle Database", context: "Datos institucionales.", project: "Proyecto de graduación CCSS", use: "Persistencia, relaciones y soporte de procesos administrativos.", icon: "database", color: "#F05B5B", preview: "ccss" },
+      { name: "Oracle APEX", context: "Desarrollo low-code empresarial.", project: "Proyecto de graduación CCSS", use: "Módulos administrativos, dashboards y flujos conectados con Oracle.", icon: "database", color: "#F05B5B", preview: "ccss" },
+      { name: "MongoDB", context: "Persistencia documental.", project: "Prototipo inmobiliario Next.js + Prisma", use: "Almacenamiento flexible de propiedades con estructuras y colecciones complejas.", icon: "mongodb", color: "#58B96B" },
+      { name: "Redis", context: "Sesiones y caché distribuida.", project: "Casa Net", use: "Sesiones resilientes, renovación controlada y reducción de accesos repetitivos.", icon: "redis", color: "#FF5A52", preview: "casanet" },
+      { name: "PL/SQL", context: "Lógica cercana a los datos.", project: "Proyecto de graduación CCSS", use: "Procedimientos, consultas y validaciones dentro del ecosistema Oracle.", icon: "database", color: "#F05B5B", preview: "ccss" },
     ],
   },
   {
@@ -202,11 +232,11 @@ export const skillCategories: SkillCategory[] = [
     label: "Herramientas",
     description: "Flujo de trabajo, documentación, pruebas y despliegue.",
     skills: [
-      { name: "Git", context: "Control de versiones.", project: "Todos los proyectos principales", use: "Historial de cambios, ramas y evolución segura del código." },
-      { name: "GitHub", context: "Colaboración y portafolio técnico.", project: "Casa Net · APIs · Proyectos personales", use: "Repositorios, respaldo, revisión y presentación del trabajo." },
-      { name: "Postman", context: "Pruebas de servicios HTTP.", project: "APIs REST en C#, PHP y Laravel", use: "Validación de endpoints, cuerpos, autenticación y respuestas." },
-      { name: "Swagger", context: "Documentación de APIs.", project: "Web APIs con ASP.NET Core", use: "Exploración, documentación y prueba de contratos REST." },
-      { name: "Docker", context: "Entornos reproducibles.", project: "Prácticas y entornos de desarrollo", use: "Contenedores para aislar dependencias y preparar despliegues consistentes." },
+      { name: "Git", context: "Control de versiones.", project: "Todos los proyectos principales", use: "Historial de cambios, ramas y evolución segura del código.", icon: "git", color: "#F05A42" },
+      { name: "GitHub", context: "Colaboración y portafolio técnico.", project: "Casa Net · APIs · Proyectos personales", use: "Repositorios, respaldo, revisión y presentación del trabajo.", icon: "github", color: "#E4EAF2" },
+      { name: "Postman", context: "Pruebas de servicios HTTP.", project: "APIs REST en C#, PHP y Laravel", use: "Validación de endpoints, cuerpos, autenticación y respuestas.", icon: "postman", color: "#FF6C37" },
+      { name: "Swagger", context: "Documentación de APIs.", project: "Web APIs con ASP.NET Core", use: "Exploración, documentación y prueba de contratos REST.", icon: "swagger", color: "#85EA2D" },
+      { name: "Docker", context: "Entornos reproducibles.", project: "Prácticas y entornos de desarrollo", use: "Contenedores para aislar dependencias y preparar despliegues consistentes.", icon: "docker", color: "#2496ED" },
     ],
   },
 ];
