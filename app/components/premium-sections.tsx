@@ -162,7 +162,6 @@ export function GitHubActivity() {
           <a href={snapshot?.latest?.html_url ?? "https://github.com/Psyckus"} target="_blank" rel="noreferrer"><small>Último proyecto actualizado</small><strong>{snapshot?.latest?.name ?? "Consultando GitHub…"}</strong><span>↗</span></a>
         </div>
       )}
-      <small className="github-note">Datos públicos cargados al entrar en viewport para evitar trabajo innecesario durante el inicio.</small>
     </section>
   );
 }

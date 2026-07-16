@@ -66,7 +66,7 @@ export function CaseStudy({ project }: { project: Project }) {
       </section>
 
       <section className="case-next"><p className="section-kicker">Siguiente caso</p><h2>Explora otra solución.</h2><Link className="button button-primary" href={project.slug === "casanet" ? "/projects/ccss" : project.slug === "ccss" ? "/projects/api-transferencias" : "/projects/casanet"}>Ver siguiente proyecto <ArrowIcon /></Link></section>
-      <footer className="site-footer"><Link className="wordmark" href="/">Jonathan <span>Cascante</span></Link><div className="footer-copy"><p>Diseñado y desarrollado por Jonathan Cascante.</p><p>Construido con React, TypeScript y Framer Motion.</p><small>Costa Rica 🇨🇷</small></div><div className="footer-links"><a href="https://github.com/Psyckus" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer">LinkedIn</a></div></footer>
+      <footer className="site-footer"><Link className="wordmark" href="/">Jonathan <span>Cascante</span></Link><div className="footer-copy"><p>Diseñado y desarrollado por Jonathan Cascante.</p><small>Costa Rica 🇨🇷</small></div><div className="footer-links"><a href="https://github.com/Psyckus" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer">LinkedIn</a></div></footer>
     </main>
   );
 }
