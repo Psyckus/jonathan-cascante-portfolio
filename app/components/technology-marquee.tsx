@@ -26,7 +26,9 @@ import {
   siSwagger,
   siTypescript,
 } from "simple-icons";
-import { skillCategories, skills, type Skill, type TechnologyIconId } from "../lib/projects";
+import { useMemo } from "react";
+import { useI18n } from "../i18n/i18n-provider";
+import { getSkillCategories, getSkills, type Skill, type TechnologyIconId } from "../lib/projects";
 import { TechIcon, type TechType } from "./icons";
 
 const brandIcons: Partial<Record<TechnologyIconId, SimpleIcon>> = {
@@ -88,21 +90,25 @@ function TechnologyChip({ technology, duplicate }: { technology: Skill; duplicat
 }
 
 export function TechnologyMarquee() {
+  const { dictionary } = useI18n();
+  const copy = dictionary.marquee;
+  const skillCategories = useMemo(() => getSkillCategories(dictionary), [dictionary]);
+  const skills = useMemo(() => getSkills(dictionary), [dictionary]);
   const rows = [
-    { label: "Backend y frontend", technologies: skillCategories.slice(0, 2).flatMap((category) => category.skills) },
-    { label: "Bases de datos y herramientas", technologies: skillCategories.slice(2).flatMap((category) => category.skills) },
+    { label: copy.rowOne, technologies: skillCategories.slice(0, 2).flatMap((category) => category.skills) },
+    { label: copy.rowTwo, technologies: skillCategories.slice(2).flatMap((category) => category.skills) },
   ];
 
   return (
     <section className="technology-marquee-section" aria-labelledby="technology-marquee-title">
       <div className="technology-marquee-heading">
         <div>
-          <p className="section-kicker">Stack tecnológico</p>
-          <h2 id="technology-marquee-title">Tecnologías con las que construyo soluciones.</h2>
+          <p className="section-kicker">{copy.kicker}</p>
+          <h2 id="technology-marquee-title">{copy.title}</h2>
         </div>
         <div className="technology-marquee-summary">
-          <p>Un recorrido por las herramientas, lenguajes y plataformas que he utilizado en proyectos reales.</p>
-          <span><strong>{skills.length}</strong> tecnologías utilizadas</span>
+          <p>{copy.description}</p>
+          <span><strong>{skills.length}</strong> {copy.used}</span>
         </div>
       </div>
 

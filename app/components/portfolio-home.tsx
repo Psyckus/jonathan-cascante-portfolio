@@ -8,60 +8,17 @@ import { ProjectPreview } from "./project-preview";
 import { EngineeringDecisions, GitHubActivity, InteractiveTerminal, PortfolioStats, WorkProcess } from "./premium-sections";
 import { StatusDot } from "./status-dot";
 import { TechnologyMarquee } from "./technology-marquee";
-import { projects, skillCategories, skills, type Project, type Skill } from "../lib/projects";
+import { LanguageSwitcher } from "./language-switcher";
+import { useI18n } from "../i18n/i18n-provider";
+import { getProjects, getSkillCategories, getSkills, type Project, type Skill, type SkillCategoryId } from "../lib/projects";
 
 const EMAIL = "jonathan.cz141998@gmail.com";
 const navigationSections = ["proyectos", "habilidades", "experiencia", "contacto"] as const;
 const observedSections = ["inicio", ...navigationSections] as const;
 type SectionId = (typeof observedSections)[number];
-const introMessages = ["Initializing Portfolio...", "Loading Components...", "Loading Projects...", "Loading Skills...", "Done."];
-const learningTopics = [
-  { name: "Arquitectura limpia", description: "Separación de responsabilidades y mantenibilidad." },
-  { name: "Microservicios", description: "Diseño de servicios independientes y escalables." },
-  { name: "Docker", description: "Contenedores y entornos reproducibles." },
-  { name: "Kubernetes", description: "Orquestación y despliegue." },
-  { name: "Azure", description: "Servicios cloud y publicación." },
-  { name: "Inteligencia Artificial", description: "Integración de modelos y automatización." },
-];
-const academicBadges = ["Desarrollo Full Stack", "APIs REST", "Backend", "Bases de datos", "Arquitectura", "Documentación técnica", "Validación con usuarios", "Trabajo en equipo"];
-const journey = [
-  { date: "2021", title: "Diplomado en Tecnologías de Información", text: "Construí una base técnica en programación, bases de datos, soporte y redes." },
-  { date: "2023", title: "Proyecto PHP · CCSS", text: "Desarrollé módulos administrativos con reglas reales, trazabilidad y reportes." },
-  { date: "2023", title: "Inicio de Ingeniería Informática", text: "Amplié mi formación hacia análisis, arquitectura y desarrollo de soluciones." },
-  { date: "2025", title: "Proyecto ASP.NET Core", text: "Profundicé en C#, MVC, servicios, repositorios, seguridad e integraciones." },
-  { date: "2026", title: "Proyecto de graduación", text: "Validé una solución institucional con usuarios, documentación y pruebas funcionales." },
-  { date: "Actualidad", title: "Buscando oportunidades Full Stack", text: "Busco aportar en equipos donde pueda construir software útil y seguir creciendo." },
-];
-const beyondCode = [
-  { theme: "gaming", index: "01", label: "Play / Think", title: "Videojuegos", signal: "Estrategia + intuición", text: "Analizo mecánicas, sistemas y decisiones. Cada partida es otra forma de entrenar la lógica y resolver problemas." },
-  { theme: "cycling", index: "02", label: "Move / Reset", title: "Ciclismo", signal: "Ritmo + claridad", text: "Recorrer nuevos caminos me ayuda a despejar la mente, recuperar perspectiva y volver con ideas más claras." },
-  { theme: "nature", index: "03", label: "Explore / Breathe", title: "Naturaleza", signal: "Perspectiva + equilibrio", text: "Montañas, ríos y senderos me recuerdan el valor de observar, explorar con calma y disfrutar el proceso." },
-  { theme: "learning", index: "04", label: "Learn / Build", title: "Aprendizaje continuo", signal: "Curiosidad + práctica", text: "Exploro tecnologías y mejores prácticas para transformar conocimiento nuevo en software más simple y sólido." },
-] as const;
-
-const beyondContext: Record<(typeof beyondCode)[number]["theme"], string> = {
-  gaming: "Estrategia, lógica y toma de decisiones en entornos interactivos.",
-  cycling: "Movimiento, constancia y claridad para volver con nuevas ideas.",
-  nature: "Perspectiva, equilibrio y espacios para observar con calma.",
-  learning: "Curiosidad constante para construir soluciones cada vez mejores.",
-};
-
 type SkillPerspective = { choice: string; learning: string; mastery: string };
-const categoryPerspectives: Record<(typeof skillCategories)[number]["id"], SkillPerspective> = {
-  backend: { choice: "Por el control del flujo, el tipado y la facilidad para separar responsabilidades.", learning: "Diseñar contratos claros, aislar reglas de negocio y tratar los errores como parte del producto.", mastery: "Intermedio · aplicación práctica" },
-  frontend: { choice: "Porque permitía construir una interfaz clara sin ocultar el comportamiento real del sistema.", learning: "Diseñar estados predecibles, componentes reutilizables y experiencias responsive.", mastery: "Intermedio · aplicación práctica" },
-  datos: { choice: "Por su ajuste al modelo de información, las consultas y las necesidades de rendimiento del proyecto.", learning: "Modelar pensando en integridad, trazabilidad y costo de cada consulta.", mastery: "Intermedio · aplicación práctica" },
-  herramientas: { choice: "Porque reducía fricción en pruebas, colaboración, documentación o despliegue.", learning: "Automatizar tareas repetibles y mantener un flujo de entrega verificable.", mastery: "Uso habitual en el flujo de trabajo" },
-};
-const skillPerspectiveOverrides: Partial<Record<string, SkillPerspective>> = {
-  Dapper: { choice: "Porque necesitaba consultas SQL explícitas, mapeo liviano y control sobre el rendimiento.", learning: "Optimizar consultas sin mezclar acceso a datos con reglas de negocio.", mastery: "Intermedio · utilizado en Casa Net" },
-  Redis: { choice: "Para sostener sesiones y caché sin aumentar accesos repetitivos a la base de datos.", learning: "Diseñar expiración, renovación y fallbacks para estados distribuidos.", mastery: "Intermedio · utilizado en Casa Net" },
-  SignalR: { choice: "Para entregar actualizaciones en tiempo real con una integración natural en .NET.", learning: "Modelar eventos pequeños y mantener sincronizada la experiencia del usuario.", mastery: "Intermedio · utilizado en Casa Net" },
-  "ASP.NET Core": { choice: "Por su arquitectura modular, seguridad integrada y ecosistema para aplicaciones mantenibles.", learning: "Separar controladores, servicios, repositorios y middleware con responsabilidades claras.", mastery: "Intermedio · múltiples proyectos" },
-  React: { choice: "Para construir interacción mediante componentes reutilizables y estado predecible.", learning: "Componer interfaces sin acoplar la presentación a los datos.", mastery: "Intermedio · portafolio profesional" },
-  TypeScript: { choice: "Para detectar errores antes de ejecutar y mantener contratos claros entre componentes.", learning: "Modelar datos y estados de interfaz con tipos útiles, no decorativos.", mastery: "Intermedio · portafolio profesional" },
-  JWT: { choice: "Para proteger APIs con autenticación desacoplada y contratos verificables.", learning: "Separar identidad, autorización y vigencia de credenciales.", mastery: "Intermedio · APIs de autenticación" },
-};
+type BeyondTheme = "gaming" | "cycling" | "nature" | "learning";
+type BeyondItem = { theme: BeyondTheme; index: string; label: string; title: string; signal: string; text: string };
 
 const heroModes: Record<TechType, { label: string; detail: string; path: string; flow: string[] }> = {
   api: { label: "API", detail: "Controllers", path: "~/backend/controllers", flow: ["CLIENTE", "API .NET", "SERVICE", "DATA", "RESPUESTA"] },
@@ -269,14 +226,17 @@ function IntroOverlay() {
   const [show, setShow] = useState(false);
   const [step, setStep] = useState(0);
   const reduced = useReducedMotion();
+  const { dictionary } = useI18n();
+  const introMessages = dictionary.introMessages;
+  const messageCount = introMessages.length;
   useEffect(() => {
     if (reduced || sessionStorage.getItem("portfolio-intro")) return;
     sessionStorage.setItem("portfolio-intro", "seen");
     const timers = [window.setTimeout(() => setShow(true), 0)];
-    introMessages.forEach((_, index) => timers.push(window.setTimeout(() => setStep(index), index * 135)));
+    Array.from({ length: messageCount }, (_, index) => timers.push(window.setTimeout(() => setStep(index), index * 135)));
     timers.push(window.setTimeout(() => setShow(false), 760));
     return () => timers.forEach(window.clearTimeout);
-  }, [reduced]);
+  }, [messageCount, reduced]);
 
   return (
     <AnimatePresence>
@@ -292,6 +252,8 @@ function IntroOverlay() {
 function Header() {
   const { active, compact, activate } = useScrollSpy();
   const reduced = useReducedMotion();
+  const { dictionary } = useI18n();
+  const copy = dictionary.nav;
   const goToSection = (event: React.MouseEvent<HTMLAnchorElement>, id: SectionId) => {
     event.preventDefault();
     activate(id);
@@ -303,14 +265,15 @@ function Header() {
   return (
     <div className={`header-shell ${compact ? "compact" : ""}`}>
       <header className="site-header">
-        <a className={`wordmark ${active === "inicio" ? "active" : ""}`} href="#inicio" aria-label="Jonathan Cascante, inicio" aria-current={active === "inicio" ? "location" : undefined} onClick={(event) => goToSection(event, "inicio")}>Jonathan <span>Cascante</span>{active === "inicio" && indicator}</a>
-        <nav aria-label="Navegación principal">
+        <a className={`wordmark ${active === "inicio" ? "active" : ""}`} href="#inicio" aria-label={copy.homeLabel} aria-current={active === "inicio" ? "location" : undefined} onClick={(event) => goToSection(event, "inicio")}>Jonathan <span>Cascante</span>{active === "inicio" && indicator}</a>
+        <nav aria-label={copy.label}>
           {navigationSections.map((id) => (
             <a key={id} href={`#${id}`} className={active === id ? "active" : ""} aria-current={active === id ? "location" : undefined} onClick={(event) => goToSection(event, id)}>
-              {id === "proyectos" ? "Proyectos" : id === "habilidades" ? "Habilidades" : id === "experiencia" ? "Experiencia" : "Contacto"}
+              {id === "proyectos" ? copy.projects : id === "habilidades" ? copy.skills : id === "experiencia" ? copy.experience : copy.contact}
               {active === id && indicator}
             </a>
           ))}
+          <LanguageSwitcher />
         </nav>
       </header>
     </div>
@@ -333,6 +296,8 @@ function HeroCode() {
   const [phase, setPhase] = useState<"typing" | "running" | "response">("typing");
   const [flowStep, setFlowStep] = useState(-1);
   const reduced = useReducedMotion();
+  const { dictionary } = useI18n();
+  const panelCopy = dictionary.hero.panel;
   const panel = useRef<HTMLDivElement>(null);
   const pointerFrame = useRef(0);
   const rawRotateX = useMotionValue(0);
@@ -340,7 +305,7 @@ function HeroCode() {
   const rotateX = useSpring(rawRotateX, { stiffness: 150, damping: 24, mass: .6 });
   const rotateY = useSpring(rawRotateY, { stiffness: 150, damping: 24, mass: .6 });
   const request = liveRequests[requestIndex];
-  const config = heroModes[mode];
+  const config = { ...heroModes[mode], flow: panelCopy.flows[mode] };
   const view = useMemo<LiveView>(() => mode === "deploy"
     ? { file: "deploy-production.yml", lines: ["name: backend-ci", "- run: dotnet test          ✓", "- run: deploy production    ✓"] }
     : request.views[mode], [mode, request]);
@@ -409,21 +374,21 @@ function HeroCode() {
   }, []);
 
   const visibleLines = useMemo(() => snippet.slice(0, chars).split("\n"), [chars, snippet]);
-  const liveLog = phase === "typing" ? `watcher · ${view.file} changed` : phase === "running" ? `request · ${request.method} ${request.endpoint} executing` : `http · ${request.status} · ${request.latency} ms`;
+  const liveLog = phase === "typing" ? `${panelCopy.watcher} · ${view.file} ${panelCopy.changed}` : phase === "running" ? `${panelCopy.request} · ${request.method} ${request.endpoint} ${panelCopy.running}` : `${panelCopy.http} · ${request.status} · ${request.latency} ms`;
   return (
     <motion.div
       ref={panel}
       className={`architecture phase-${phase}`}
-      aria-label={`Sistema backend en vivo: ${request.method} ${request.endpoint}`}
+      aria-label={`${panelCopy.aria}: ${request.method} ${request.endpoint}`}
       onPointerMove={move}
       onPointerLeave={resetTilt}
       onPointerCancel={resetTilt}
       style={{ rotateX, rotateY, transformPerspective: 1200 }}
     >
       <div className="architecture-particles" aria-hidden="true"><i /><i /><i /><i /><i /></div>
-      <div className="terminal-bar"><span /><span /><span /><AnimatePresence mode="wait"><motion.code key={config.path} initial={reduced ? false : { opacity: 0, y: 3 }} animate={{ opacity: 1, y: 0 }} exit={reduced ? undefined : { opacity: 0, y: -3 }} transition={{ duration: .25 }}>{config.path}</motion.code></AnimatePresence><small>.NET 8 · ONLINE</small></div>
+      <div className="terminal-bar"><span /><span /><span /><AnimatePresence mode="wait"><motion.code key={config.path} initial={reduced ? false : { opacity: 0, y: 3 }} animate={{ opacity: 1, y: 0 }} exit={reduced ? undefined : { opacity: 0, y: -3 }} transition={{ duration: .25 }}>{config.path}</motion.code></AnimatePresence><small>.NET 8 · {panelCopy.online}</small></div>
       <div className="architecture-body">
-        <aside role="tablist" aria-label="Capas de la solución">
+        <aside role="tablist" aria-label={panelCopy.layers}>
           {(Object.keys(heroModes) as TechType[]).map((key) => (
             <button type="button" role="tab" aria-selected={mode === key} className={mode === key ? "active" : ""} onPointerEnter={() => setMode(key)} onFocus={() => setMode(key)} onClick={() => setMode(key)} key={key}>
               <TechIcon type={key} /><small>{heroModes[key].label}</small><em>{heroModes[key].detail}</em>
@@ -434,11 +399,11 @@ function HeroCode() {
           <div className="live-request-bar">
             <span className={`request-method method-${request.method.toLowerCase()}`}>{request.method}</span>
             <code>{request.endpoint}</code>
-            <span className="live-request-state"><StatusDot size="xs" /> Live request</span>
-            <span className="request-latency"><small>Latency</small><b>{request.latency} ms</b></span>
+            <span className="live-request-state"><StatusDot size="xs" /> {panelCopy.liveRequest}</span>
+            <span className="request-latency"><small>{panelCopy.latency}</small><b>{request.latency} ms</b></span>
           </div>
           <div className="live-editor">
-            <div className="editor-file"><AnimatePresence mode="wait"><motion.span key={view.file} initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .2 }}>{view.file}</motion.span></AnimatePresence><i>{phase === "typing" ? "EDITING" : phase === "running" ? "EXECUTING" : "RESPONSE"}</i></div>
+            <div className="editor-file"><AnimatePresence mode="wait"><motion.span key={view.file} initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .2 }}>{view.file}</motion.span></AnimatePresence><i>{phase === "typing" ? panelCopy.editing : phase === "running" ? panelCopy.executing : panelCopy.response}</i></div>
             <div className="live-code-lines">
               <AnimatePresence mode="popLayout" initial={false}>
                 {visibleLines.map((line, index) => (
@@ -453,13 +418,13 @@ function HeroCode() {
               <motion.span className="live-log-entry" key={liveLog} initial={reduced ? false : { opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} exit={reduced ? undefined : { opacity: 0 }} transition={{ duration: .2 }}><i aria-hidden="true" />{liveLog}</motion.span>
             </AnimatePresence>
             <AnimatePresence>
-              {phase === "response" && <motion.div className={`server-response ${request.tone}`} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 7, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: .28 }}><StatusDot tone={request.tone === "warning" ? "warning" : "online"} /><span>SERVER RESPONSE</span><b>{request.status}</b></motion.div>}
+              {phase === "response" && <motion.div className={`server-response ${request.tone}`} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 7, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: .28 }}><StatusDot tone={request.tone === "warning" ? "warning" : "online"} /><span>{panelCopy.serverResponse}</span><b>{request.status}</b></motion.div>}
             </AnimatePresence>
           </div>
         </div>
       </div>
       <div className="architecture-flow" aria-hidden="true">
-        <span className="flow-caption">Request pipeline <i>{phase === "response" ? request.status : phase === "running" ? "processing" : "waiting"}</i></span>
+        <span className="flow-caption">{panelCopy.pipeline} <i>{phase === "response" ? request.status : phase === "running" ? panelCopy.processing : panelCopy.waiting}</i></span>
         <AnimatePresence mode="wait">
           <motion.div className="flow-track" key={mode} initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .25 }}>
           {config.flow.map((node, index) => (
@@ -477,6 +442,8 @@ function HeroCode() {
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const reduced = useReducedMotion();
+  const { dictionary, locale } = useI18n();
+  const copy = dictionary.projectsSection;
   const card = useRef<HTMLElement>(null);
   const frame = useRef(0);
   const onMove = (event: React.PointerEvent<HTMLElement>) => {
@@ -521,12 +488,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <p className="project-label">{project.label}</p>
         <h3>{project.title}</h3>
         <p>{project.description}</p>
-        <div className="tag-list" aria-label={`Tecnologías de ${project.title}`}>{project.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div>
+        <div className="tag-list" aria-label={`${copy.technologiesFor} ${project.title}`}>{project.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div>
         <div className="project-actions">
-          <Link className="mini-action primary" href={`/projects/${project.slug}`}>Ver proyecto <ArrowIcon size={16} /></Link>
-          <Link className="mini-action" href={`/projects/${project.slug}#arquitectura`}>Arquitectura</Link>
+          <Link className="mini-action primary" href={`/${locale}/projects/${project.slug}`}>{copy.viewProject} <ArrowIcon size={16} /></Link>
+          <Link className="mini-action" href={`/${locale}/projects/${project.slug}#arquitectura`}>{copy.architecture}</Link>
           <a className="mini-action" href={project.githubUrl} target="_blank" rel="noreferrer">GitHub <ExternalIcon size={14} /></a>
-          {project.demoUrl ? <a className="mini-action" href={project.demoUrl} target="_blank" rel="noreferrer">Demo <ExternalIcon size={14} /></a> : <span className="mini-action disabled" aria-label="Demo privada">Demo privada</span>}
+          {project.demoUrl ? <a className="mini-action" href={project.demoUrl} target="_blank" rel="noreferrer">Demo <ExternalIcon size={14} /></a> : <span className="mini-action disabled" aria-label={copy.privateDemoLabel}>{copy.privateDemo}</span>}
         </div>
       </div>
     </motion.article>
@@ -535,14 +502,16 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 function ArchitectureShowcase() {
   const reduced = useReducedMotion();
-  const nodes = ["Usuario", "MVC", "Service", "Repository", "MySQL"];
+  const { dictionary } = useI18n();
+  const copy = dictionary.architectureShowcase;
+  const nodes = copy.nodes;
   const integrations = ["Redis", "SignalR", "SMTP", "OAuth"];
   return (
     <Reveal className="architecture-showcase">
-      <div className="architecture-copy"><p className="section-kicker">Arquitectura viva</p><h3>Una solución completa, capa por capa.</h3><p>El flujo muestra cómo una acción del usuario atraviesa la aplicación y activa servicios especializados sin acoplar responsabilidades.</p></div>
-      <div className="system-diagram" aria-label="Diagrama de arquitectura por capas">
+      <div className="architecture-copy"><p className="section-kicker">{copy.kicker}</p><h3>{copy.title}</h3><p>{copy.description}</p></div>
+      <div className="system-diagram" aria-label={copy.aria}>
         <div className="main-flow">
-          {nodes.map((node, index) => <div className="diagram-step" key={node}><motion.span initial={reduced ? false : { opacity: 0, scale: .96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * .09 }}>{node}<small>{index === 0 ? "Entrada" : index === nodes.length - 1 ? "Datos" : "Capa"}</small></motion.span>{index < nodes.length - 1 && <motion.i initial={reduced ? false : { scaleY: 0 }} whileInView={{ scaleY: 1 }} viewport={{ once: true }} transition={{ delay: .12 + index * .09, duration: .42 }}><b /></motion.i>}</div>)}
+          {nodes.map((node, index) => <div className="diagram-step" key={node}><motion.span initial={reduced ? false : { opacity: 0, scale: .96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * .09 }}>{node}<small>{index === 0 ? copy.entry : index === nodes.length - 1 ? copy.data : copy.layer}</small></motion.span>{index < nodes.length - 1 && <motion.i initial={reduced ? false : { scaleY: 0 }} whileInView={{ scaleY: 1 }} viewport={{ once: true }} transition={{ delay: .12 + index * .09, duration: .42 }}><b /></motion.i>}</div>)}
         </div>
         <div className="integration-grid">{integrations.map((item, index) => <motion.span key={item} initial={reduced ? false : { opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: .4 + index * .07 }}>{item}</motion.span>)}</div>
       </div>
@@ -574,33 +543,40 @@ function AnimatedCounter({ value, suffix, label }: { value: number; suffix?: str
 }
 
 function SkillsExplorer() {
-  const [selected, setSelected] = useState(skills[0]);
-  const [filter, setFilter] = useState<"all" | (typeof skillCategories)[number]["id"]>("all");
+  const { dictionary, locale } = useI18n();
+  const copy = dictionary.skillsSection;
+  const skillCategories = useMemo(() => getSkillCategories(dictionary), [dictionary]);
+  const skills = useMemo(() => getSkills(dictionary), [dictionary]);
+  const [selectedName, setSelectedName] = useState(skills[0].name);
+  const [filter, setFilter] = useState<"all" | SkillCategoryId>("all");
   const [query, setQuery] = useState("");
   const reduced = useReducedMotion();
-  const categoryIcons: Record<(typeof skillCategories)[number]["id"], TechType> = { backend: "api", frontend: "service", datos: "db", herramientas: "deploy" };
+  const selected = skills.find((skill) => skill.name === selectedName) ?? skills[0];
+  const categoryIcons: Record<SkillCategoryId, TechType> = { backend: "api", frontend: "service", datos: "db", herramientas: "deploy" };
   const filterOptions = [
-    { id: "all" as const, label: "Todas" },
-    { id: "backend" as const, label: "Backend" },
-    { id: "frontend" as const, label: "Frontend" },
-    { id: "datos" as const, label: "Datos" },
-    { id: "herramientas" as const, label: "Herramientas" },
+    { id: "all" as const, label: copy.filters.all },
+    { id: "backend" as const, label: copy.filters.backend },
+    { id: "frontend" as const, label: copy.filters.frontend },
+    { id: "datos" as const, label: copy.filters.datos },
+    { id: "herramientas" as const, label: copy.filters.herramientas },
   ];
   const visibleCategories = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase("es");
+    const normalized = query.trim().toLocaleLowerCase(locale);
     return skillCategories
       .filter((category) => filter === "all" || category.id === filter)
-      .map((category) => ({ ...category, skills: category.skills.filter((skill) => !normalized || skill.name.toLocaleLowerCase("es").includes(normalized)) }))
+      .map((category) => ({ ...category, skills: category.skills.filter((skill) => !normalized || skill.name.toLocaleLowerCase(locale).includes(normalized)) }))
       .filter((category) => category.skills.length > 0);
-  }, [filter, query]);
+  }, [filter, locale, query, skillCategories]);
   const selectedCategory = skillCategories.find((category) => category.skills.some((skill) => skill.name === selected.name))?.id ?? "backend";
-  const perspective = skillPerspectiveOverrides[selected.name] ?? categoryPerspectives[selectedCategory];
-  const catalogTransitionKey = `${filter}:${query.trim().toLocaleLowerCase("es")}`;
+  const overrides = copy.overrides as Partial<Record<string, SkillPerspective>>;
+  const perspectives = copy.perspectives as Record<SkillCategoryId, SkillPerspective>;
+  const perspective = overrides[selected.name] ?? perspectives[selectedCategory];
+  const catalogTransitionKey = `${filter}:${query.trim().toLocaleLowerCase(locale)}`;
   const changeFilter = (nextFilter: typeof filter) => {
     setFilter(nextFilter);
     if (nextFilter === "all") return;
     const nextCategory = skillCategories.find((category) => category.id === nextFilter);
-    if (nextCategory && !nextCategory.skills.some((skill) => skill.name === selected.name)) setSelected(nextCategory.skills[0]);
+    if (nextCategory && !nextCategory.skills.some((skill) => skill.name === selected.name)) setSelectedName(nextCategory.skills[0].name);
   };
   const handleFilterKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
     if (event.key === "Enter" || event.key === " ") {
@@ -620,13 +596,13 @@ function SkillsExplorer() {
   return (
     <div className="skills-explorer">
       <div className="skills-toolbar">
-        <div className="skills-total"><strong>{skills.length}</strong><span>tecnologías utilizadas</span><small>Selecciona una tecnología para ver cómo la aplico dentro de una solución real.</small></div>
-        <div className="skill-filters" role="tablist" aria-label="Filtrar tecnologías por categoría">
+        <div className="skills-total"><strong>{skills.length}</strong><span>{copy.used}</span><small>{copy.hint}</small></div>
+        <div className="skill-filters" role="tablist" aria-label={copy.filterLabel}>
           {filterOptions.map((option, index) => <button type="button" role="tab" aria-selected={filter === option.id} className={filter === option.id ? "active" : ""} onClick={() => changeFilter(option.id)} onKeyDown={(event) => handleFilterKeyDown(event, index)} key={option.id}>{option.label}</button>)}
         </div>
-        <label className="skill-search"><span aria-hidden="true" /><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar tecnología" aria-label="Buscar tecnología" /></label>
+        <label className="skill-search"><span aria-hidden="true" /><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.search} aria-label={copy.search} /></label>
       </div>
-      <div className="skill-catalog" id="skill-catalog" aria-label="Tecnologías agrupadas por categoría">
+      <div className="skill-catalog" id="skill-catalog" aria-label={copy.catalogLabel}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             className="skill-catalog-content"
@@ -640,22 +616,22 @@ function SkillsExplorer() {
               const categoryIndex = skillCategories.findIndex((item) => item.id === category.id);
               return (
                 <section className="skill-category" data-category={category.id} key={category.id}>
-                  <div className="skill-category-heading"><span>{String(categoryIndex + 1).padStart(2, "0")}</span><i><TechIcon type={categoryIcons[category.id]} /></i><div><h3>{category.label}</h3><p>{category.description}</p></div><small>{skillCategories[categoryIndex].skills.length} tecnologías</small></div>
+                  <div className="skill-category-heading"><span>{String(categoryIndex + 1).padStart(2, "0")}</span><i><TechIcon type={categoryIcons[category.id]} /></i><div><h3>{category.label}</h3><p>{category.description}</p></div><small>{skillCategories[categoryIndex].skills.length} {copy.technologyCount}</small></div>
                   <div className="skill-selector" role="listbox" aria-label={category.label}>
-                    {category.skills.map((skill) => <button type="button" role="option" aria-selected={selected.name === skill.name} className={selected.name === skill.name ? "selected" : ""} onMouseEnter={() => setSelected(skill)} onFocus={() => setSelected(skill)} onClick={() => setSelected(skill)} key={skill.name}>{skill.name}<span className="skill-active-indicator"><i /></span></button>)}
+                    {category.skills.map((skill) => <button type="button" role="option" aria-selected={selected.name === skill.name} className={selected.name === skill.name ? "selected" : ""} onMouseEnter={() => setSelectedName(skill.name)} onFocus={() => setSelectedName(skill.name)} onClick={() => setSelectedName(skill.name)} key={skill.name}>{skill.name}<span className="skill-active-indicator"><i /></span></button>)}
                   </div>
                 </section>
               );
             })}
-            {visibleCategories.length === 0 && <p className="skill-empty">No encontré una tecnología con ese nombre.</p>}
+            {visibleCategories.length === 0 && <p className="skill-empty">{copy.empty}</p>}
           </motion.div>
         </AnimatePresence>
       </div>
       <div className="skill-detail" data-category={selectedCategory} aria-live="polite">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div className="skill-detail-copy" key={selected.name} initial={reduced ? { opacity: 0 } : { opacity: 0, x: -7 }} animate={{ opacity: 1, x: 0 }} exit={reduced ? { opacity: 0 } : { opacity: 0, x: 5 }} transition={{ duration: .25 }}>
-            <p className="section-kicker">Tecnología seleccionada</p><h3>{selected.name}</h3>
-            <dl><div><dt>Dónde la utilicé</dt><dd>{selected.context}</dd></div><div><dt>Proyecto</dt><dd>{selected.project}</dd></div><div><dt>Qué problema resolvió</dt><dd>{selected.use}</dd></div><div><dt>Por qué la elegí</dt><dd>{perspective.choice}</dd></div><div><dt>Qué aprendí</dt><dd>{perspective.learning}</dd></div><div><dt>Nivel aproximado</dt><dd><span className="mastery-indicator"><i /><i /><i /><i /></span>{perspective.mastery}</dd></div></dl>
+            <p className="section-kicker">{copy.selected}</p><h3>{selected.name}</h3>
+            <dl><div><dt>{copy.fields.where}</dt><dd>{selected.context}</dd></div><div><dt>{copy.fields.project}</dt><dd>{selected.project}</dd></div><div><dt>{copy.fields.problem}</dt><dd>{selected.use}</dd></div><div><dt>{copy.fields.why}</dt><dd>{perspective.choice}</dd></div><div><dt>{copy.fields.learned}</dt><dd>{perspective.learning}</dd></div><div><dt>{copy.fields.level}</dt><dd><span className="mastery-indicator"><i /><i /><i /><i /></span>{perspective.mastery}</dd></div></dl>
           </motion.div>
         </AnimatePresence>
         <AnimatePresence mode="wait" initial={false}>
@@ -669,21 +645,23 @@ function SkillsExplorer() {
 }
 
 function SkillContextPreview({ skill }: { skill: Skill }) {
+  const { dictionary } = useI18n();
+  const copy = dictionary.skillsSection.preview;
   const demonstrations: Partial<Record<string, Array<[string, string]>>> = {
-    React: [["component", "function ProjectGrid()"], ["state", "const [active, setActive] = useState(0);"], ["render", "<ProjectCard project={items[active]} />"], ["flow", "state → component → interface"]],
-    TypeScript: [["interface", "ProjectCardProps { project: Project }"], ["type", "type Status = 'draft' | 'published';"], ["validate", "const card: ProjectCardProps = props;"], ["result", "safe props · predictable UI"]],
-    JavaScript: [["event", "button.addEventListener('click', load);"], ["request", "const data = await fetch('/api/projects');"], ["update", "view.replaceChildren(render(data));"], ["result", "interface updated"]],
+    React: [["component", "function ProjectGrid()"], ["state", "const [active, setActive] = useState(0);"], ["render", "<ProjectCard project={items[active]} />"], ["flow", copy.interfaceFlow]],
+    TypeScript: [["interface", "ProjectCardProps { project: Project }"], ["type", "type Status = 'draft' | 'published';"], ["validate", "const card: ProjectCardProps = props;"], [copy.result, copy.safeProps]],
+    JavaScript: [["event", "button.addEventListener('click', load);"], ["request", "const data = await fetch('/api/projects');"], ["update", "view.replaceChildren(render(data));"], [copy.result, copy.interfaceUpdated]],
     "C#": [["controller", "[HttpGet(\"api/projects\")]"], ["service", "await service.GetAllAsync();"], ["response", "return Ok(projects);"], ["status", "200 OK"]],
-    Dapper: [["query", "SELECT id, title FROM projects"], ["map", "QueryAsync<Project>(sql);"], ["result", "rows → typed entities"], ["status", "mapping complete"]],
-    Redis: [["cache", "GET session:user:1048"], ["result", "CACHE HIT"], ["ttl", "expires in 18m"], ["latency", "2 ms response"]],
-    MongoDB: [["collection", "db.properties.find({ active: true })"], ["document", "{ title, price, location }"], ["result", "12 documents"], ["status", "query complete"]],
-    Hibernate: [["entity", "@Entity class Property"], ["repository", "repository.findAll();"], ["persist", "session.save(entity);"], ["status", "transaction committed"]],
+    Dapper: [["query", "SELECT id, title FROM projects"], ["map", "QueryAsync<Project>(sql);"], [copy.result, copy.typedEntities], [copy.status, copy.mappingComplete]],
+    Redis: [["cache", "GET session:user:1048"], [copy.result, "CACHE HIT"], ["ttl", copy.expires], ["latency", copy.response]],
+    MongoDB: [["collection", "db.properties.find({ active: true })"], ["document", "{ title, price, location }"], [copy.result, copy.documents], [copy.status, copy.queryComplete]],
+    Hibernate: [["entity", "@Entity class Property"], ["repository", "repository.findAll();"], ["persist", "session.save(entity);"], [copy.status, copy.transactionCommitted]],
   };
-  const lines = demonstrations[skill.name] ?? [["technology", `\"${skill.name}\"`], ["context", `\"${skill.context}\"`], ["project", `\"${skill.project}\"`], ["purpose", "software que genera valor"]];
+  const lines = demonstrations[skill.name] ?? [[copy.technology, `\"${skill.name}\"`], [copy.context, `\"${skill.context}\"`], [copy.project, `\"${skill.project}\"`], ["purpose", copy.purpose]];
 
   return (
-    <div className="skill-context-preview" role="img" aria-label={`Contexto de uso de ${skill.name}`}>
-      <div className="preview-top"><i /><span>~/skills/{skill.name.toLowerCase().replaceAll(" ", "-")}</span><small>uso real</small></div>
+    <div className="skill-context-preview" role="img" aria-label={`${copy.aria} ${skill.name}`}>
+      <div className="preview-top"><i /><span>~/skills/{skill.name.toLowerCase().replaceAll(" ", "-")}</span><small>{copy.realUse}</small></div>
       <div className="skill-code-body">{lines.map(([label, code], index) => <span className="skill-demo-line" key={`${label}-${index}`}><i>{String(index + 1).padStart(2, "0")}</i><code><b>{label}</b>: {code}</code></span>)}<i className="skill-code-cursor" /></div>
     </div>
   );
@@ -691,15 +669,17 @@ function SkillContextPreview({ skill }: { skill: Skill }) {
 
 function LearningBlock() {
   const reduced = useReducedMotion();
+  const { dictionary } = useI18n();
+  const copy = dictionary.learning;
   return (
     <Reveal className="learning-block">
-      <div><p className="section-kicker">Evolución constante</p><h3>Actualmente aprendiendo</h3><p>Temas que estoy fortaleciendo para diseñar soluciones más mantenibles, distribuidas y preparadas para la nube.</p></div>
-      <div className="learning-list">{learningTopics.map((topic, index) => <motion.div className="learning-item" key={topic.name} initial={reduced ? false : { opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .05 }}><i aria-hidden="true" /><span><b>{topic.name}</b><small>{topic.description}</small></span><em>En exploración</em></motion.div>)}</div>
+      <div><p className="section-kicker">{copy.kicker}</p><h3>{copy.title}</h3><p>{copy.description}</p></div>
+      <div className="learning-list">{copy.topics.map((topic, index) => <motion.div className="learning-item" key={topic.name} initial={reduced ? false : { opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .05 }}><i aria-hidden="true" /><span><b>{topic.name}</b><small>{topic.description}</small></span><em>{copy.status}</em></motion.div>)}</div>
     </Reveal>
   );
 }
 
-function TimelineEvent({ item, current }: { item: (typeof journey)[number]; current: boolean }) {
+function TimelineEvent({ item, current }: { item: { date: string; title: string; text: string }; current: boolean }) {
   const event = useRef<HTMLLIElement>(null);
   const reduced = useReducedMotion();
   const visible = useInView(event, { once: true, amount: .42, margin: "0px 0px -24% 0px" });
@@ -728,6 +708,8 @@ function Timeline() {
   const timeline = useRef<HTMLOListElement>(null);
   const rail = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const { dictionary } = useI18n();
+  const journey = dictionary.academic.journey;
   const [railMetrics, setRailMetrics] = useState({ top: 34, height: 0 });
   const { scrollYProgress } = useScroll({ target: rail, offset: ["start 72%", "end 38%"] });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 110, damping: 27, mass: .4, restDelta: .001 });
@@ -780,7 +762,8 @@ function Timeline() {
   );
 }
 
-function BeyondVisual({ theme }: { theme: (typeof beyondCode)[number]["theme"] }) {
+function BeyondVisual({ theme }: { theme: BeyondTheme }) {
+  const { dictionary } = useI18n();
   if (theme === "gaming") {
     return (
       <div className="game-scene">
@@ -791,7 +774,7 @@ function BeyondVisual({ theme }: { theme: (typeof beyondCode)[number]["theme"] }
           <span className="game-buttons"><i /><i /></span>
           <span className="game-status" />
         </div>
-        <span className="game-score"><i /> Focus 98</span>
+        <span className="game-score"><i /> {dictionary.beyond.focus}</span>
       </div>
     );
   }
@@ -830,12 +813,12 @@ function BeyondVisual({ theme }: { theme: (typeof beyondCode)[number]["theme"] }
         <i className="book-page page-one" /><i className="book-page page-two" /><i className="book-page page-three" />
         <b className="book-spine" />
       </div>
-      <span className="learning-progress"><i /> Always in beta</span>
+      <span className="learning-progress"><i /> {dictionary.beyond.alwaysBeta}</span>
     </div>
   );
 }
 
-function BeyondCard({ item, index, onActive, onInactive }: { item: (typeof beyondCode)[number]; index: number; onActive: (theme: (typeof beyondCode)[number]["theme"]) => void; onInactive: () => void }) {
+function BeyondCard({ item, index, onActive, onInactive }: { item: BeyondItem; index: number; onActive: (theme: BeyondTheme) => void; onInactive: () => void }) {
   const card = useRef<HTMLElement>(null);
   const frame = useRef(0);
   const reduced = useReducedMotion();
@@ -899,14 +882,18 @@ function BeyondCard({ item, index, onActive, onInactive }: { item: (typeof beyon
 }
 
 function BeyondCode() {
-  const [activeTheme, setActiveTheme] = useState<(typeof beyondCode)[number]["theme"] | null>(null);
+  const [activeTheme, setActiveTheme] = useState<BeyondTheme | null>(null);
   const reduced = useReducedMotion();
-  const context = activeTheme ? beyondContext[activeTheme] : "Cuatro espacios que alimentan mi forma de pensar: estrategia, movimiento, perspectiva y una curiosidad que nunca se queda quieta.";
+  const { dictionary } = useI18n();
+  const copy = dictionary.beyond;
+  const beyondCode = copy.cards as BeyondItem[];
+  const contexts = copy.contexts as Record<BeyondTheme, string>;
+  const context = activeTheme ? contexts[activeTheme] : copy.defaultContext;
 
   return (
     <Reveal className="beyond-code">
       <div className="mini-section-heading">
-        <div><p className="section-kicker">Más allá del código</p><h3>La curiosidad también se entrena fuera de la pantalla.</h3></div>
+        <div><p className="section-kicker">{copy.kicker}</p><h3>{copy.title}</h3></div>
         <div className="beyond-heading-context" aria-live="polite">
           <AnimatePresence mode="wait" initial={false}>
             <motion.p key={activeTheme ?? "default"} initial={reduced ? false : { opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={reduced ? undefined : { opacity: 0, y: -3 }} transition={{ duration: .22 }}>{context}</motion.p>
@@ -919,17 +906,21 @@ function BeyondCode() {
 }
 
 function Philosophy() {
+  const { dictionary } = useI18n();
+  const copy = dictionary.philosophy;
   return (
     <Reveal className="philosophy-block">
-      <p className="section-kicker">Cómo pienso el desarrollo</p>
-      <blockquote>“No me gusta desarrollar únicamente código. Me gusta entender el problema, diseñar una solución limpia y construir software que realmente genere valor.”</blockquote>
-      <div className="philosophy-signals"><span><i />Apasionado por construir software</span><span><i />Enfoque backend</span><span><i />Aprendizaje continuo</span></div>
+      <p className="section-kicker">{copy.kicker}</p>
+      <blockquote>{copy.quote}</blockquote>
+      <div className="philosophy-signals">{copy.signals.map((signal) => <span key={signal}><i />{signal}</span>)}</div>
     </Reveal>
   );
 }
 
 function Contact() {
   const [copied, setCopied] = useState(false);
+  const { dictionary, locale } = useI18n();
+  const copy = dictionary.contact;
   const copyEmail = async () => {
     const fallback = () => {
       const helper = document.createElement("textarea");
@@ -954,13 +945,13 @@ function Contact() {
     <GlowSurface className="contact-section" id="contacto">
       <div className="contact-orbit" aria-hidden="true"><i /><i /><i /></div>
       <Reveal className="contact-copy">
-        <p className="section-kicker">Hablemos</p><h2>¿Tienes una oportunidad o un proyecto en mente?</h2>
-        <p>Estoy disponible para roles junior de desarrollo de software y para colaborar en productos web donde pueda aportar con C#, .NET y APIs.</p>
+        <p className="section-kicker">{copy.kicker}</p><h2>{copy.title}</h2>
+        <p>{copy.description}</p>
         <div className="contact-actions premium-actions">
-          <button type="button" className={`button button-primary ${copied ? "success" : ""}`} onClick={copyEmail}>{copied ? <CheckIcon /> : <CopyIcon />}{copied ? "Correo copiado ✓" : "Copiar correo"}</button>
-          <a className="button button-secondary" href="/Jonathan-Cascante-CV.pdf" download><DownloadIcon /> Descargar CV</a>
-          <a className="text-link platform-link linkedin-link" href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer" aria-label="Abrir perfil de LinkedIn de Jonathan Cascante"><LinkedInIcon /> LinkedIn</a>
-          <a className="text-link platform-link github-link" href="https://github.com/Psyckus" target="_blank" rel="noreferrer" aria-label="Abrir perfil de GitHub de Jonathan Cascante"><GitHubIcon /> GitHub</a>
+          <button type="button" className={`button button-primary ${copied ? "success" : ""}`} onClick={copyEmail}>{copied ? <CheckIcon /> : <CopyIcon />}{copied ? copy.copied : copy.copy}</button>
+          <a className="button button-secondary" href={locale === "es" ? "/CV_ES.pdf" : "/CV_EN.pdf"} download><DownloadIcon /> {copy.download}</a>
+          <a className="text-link platform-link linkedin-link" href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer" aria-label={copy.linkedinLabel}><LinkedInIcon /> LinkedIn</a>
+          <a className="text-link platform-link github-link" href="https://github.com/Psyckus" target="_blank" rel="noreferrer" aria-label={copy.githubLabel}><GitHubIcon /> GitHub</a>
         </div>
       </Reveal>
     </GlowSurface>
@@ -970,6 +961,8 @@ function Contact() {
 export function PortfolioHome() {
   const [konamiUnlocked, setKonamiUnlocked] = useState(false);
   const reduced = useReducedMotion();
+  const { dictionary } = useI18n();
+  const projects = useMemo(() => getProjects(dictionary), [dictionary]);
   useEffect(() => {
     const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
     const lowPower = navigator.hardwareConcurrency <= 4 || (memory !== undefined && memory <= 4);
@@ -1000,25 +993,25 @@ export function PortfolioHome() {
   return (
     <main>
       <IntroOverlay />
-      <AnimatePresence>{konamiUnlocked && <motion.div className="easter-toast" initial={reduced ? false : { opacity: 0, y: 12, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduced ? undefined : { opacity: 0, y: 7 }} transition={{ duration: reduced ? 0 : .3 }}><StatusDot />Modo desarrollador desbloqueado · +30 enfoque</motion.div>}</AnimatePresence>
+      <AnimatePresence>{konamiUnlocked && <motion.div className="easter-toast" initial={reduced ? false : { opacity: 0, y: 12, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduced ? undefined : { opacity: 0, y: 7 }} transition={{ duration: reduced ? 0 : .3 }}><StatusDot />{dictionary.hero.easterEgg}</motion.div>}</AnimatePresence>
       <div className="ambient-particles" aria-hidden="true"><i /><i /><i /><i /><i /></div>
       <Header />
       <GlowSurface className="hero" id="inicio">
         <Reveal className="hero-copy">
-          <p className="eyebrow"><span /> Full Stack Developer · Costa Rica</p>
-          <h1>Construyo soluciones web que conectan <em>ideas</em> con <em>resultados.</em></h1>
-          <p className="role">C# / .NET <b>·</b> APIs REST <b>·</b> Aplicaciones empresariales</p>
-          <p className="intro">Transformo necesidades reales en productos confiables: backend robusto, interfaces claras y una arquitectura preparada para crecer.</p>
-          <div className="hero-actions"><a className="button button-primary" href="#proyectos">Ver proyectos <ArrowIcon /></a><a className="button button-secondary" href="#contacto">Contactarme <ArrowIcon /></a></div>
-          <div className="skill-row" aria-label="Tecnologías principales">{[".NET 8", "ASP.NET Core", "C#", "MySQL", "JavaScript"].map((skill) => <span className="skill-chip" key={skill}><i aria-hidden="true" /> {skill}</span>)}</div>
-          <div className="hero-signals" aria-label="Estado profesional"><span><StatusDot />Disponible de inmediato</span><span>Abierto a oportunidades</span><span>Backend & APIs</span></div>
+          <p className="eyebrow"><span /> {dictionary.hero.eyebrow}</p>
+          <h1>{dictionary.hero.headlineStart} <em>{dictionary.hero.headlineIdea}</em> {dictionary.hero.headlineJoin} <em>{dictionary.hero.headlineResult}</em></h1>
+          <p className="role">{dictionary.hero.role.split(" · ").map((part, index, parts) => <span key={part}>{part}{index < parts.length - 1 && <b> · </b>}</span>)}</p>
+          <p className="intro">{dictionary.hero.intro}</p>
+          <div className="hero-actions"><a className="button button-primary" href="#proyectos">{dictionary.hero.viewProjects} <ArrowIcon /></a><a className="button button-secondary" href="#contacto">{dictionary.hero.contactMe} <ArrowIcon /></a></div>
+          <div className="skill-row" aria-label={dictionary.hero.skillsLabel}>{[".NET 8", "ASP.NET Core", "C#", "MySQL", "JavaScript"].map((skill) => <span className="skill-chip" key={skill}><i aria-hidden="true" /> {skill}</span>)}</div>
+          <div className="hero-signals" aria-label={dictionary.hero.statusLabel}><span><StatusDot />{dictionary.hero.available}</span><span>{dictionary.hero.open}</span><span>{dictionary.hero.focus}</span></div>
         </Reveal>
         <HeroCode />
       </GlowSurface>
 
       <GlowSurface className="section projects-section" id="proyectos">
-        <Reveal className="section-heading"><div><p className="section-kicker">Trabajo seleccionado</p><h2>Proyectos que resuelven problemas reales.</h2></div><p>Cada proyecto combina decisiones técnicas con una necesidad concreta: organizar procesos, reducir fricción y entregar información confiable.</p></Reveal>
-        <Reveal className="project-stats" delay={.05}><AnimatedCounter value={3} label="Proyectos principales" /><AnimatedCounter value={12} suffix="+" label="Integraciones aplicadas" /><AnimatedCounter value={3} label="Casos de estudio" /></Reveal>
+        <Reveal className="section-heading"><div><p className="section-kicker">{dictionary.projectsSection.kicker}</p><h2>{dictionary.projectsSection.title}</h2></div><p>{dictionary.projectsSection.description}</p></Reveal>
+        <Reveal className="project-stats" delay={.05}><AnimatedCounter value={3} label={dictionary.projectsSection.mainProjects} /><AnimatedCounter value={12} suffix="+" label={dictionary.projectsSection.integrations} /><AnimatedCounter value={3} label={dictionary.projectsSection.caseStudies} /></Reveal>
         <div className="project-list">{projects.map((project, index) => <ProjectCard project={project} index={index} key={project.slug} />)}</div>
         <ArchitectureShowcase />
       </GlowSurface>
@@ -1026,14 +1019,14 @@ export function PortfolioHome() {
       <PortfolioStats />
 
       <section className="section profile-section" id="habilidades">
-        <Reveal className="section-heading compact"><div><p className="section-kicker">Capacidades</p><h2>De la base de datos a la interfaz.</h2></div><p>Selecciona una tecnología para ver dónde la aplico y qué valor aporta dentro de una solución real.</p></Reveal>
+        <Reveal className="section-heading compact"><div><p className="section-kicker">{dictionary.skillsSection.kicker}</p><h2>{dictionary.skillsSection.title}</h2></div><p>{dictionary.skillsSection.description}</p></Reveal>
         <Reveal delay={.08}><SkillsExplorer /></Reveal>
         <TechnologyMarquee />
         <LearningBlock />
         <EngineeringDecisions />
         <WorkProcess />
         <div className="academic" id="experiencia">
-          <Reveal className="academic-intro"><p className="section-kicker">Experiencia académica</p><h2>Formación aplicada a escenarios reales.</h2><p>Mi experiencia se ha construido desarrollando soluciones completas, documentando procesos y validando resultados con usuarios reales.</p><div className="availability"><StatusDot size="md" /> Disponibilidad inmediata</div><div className="academic-badges" aria-label="Competencias aplicadas">{academicBadges.map((badge) => <span key={badge}><b>✓</b>{badge}</span>)}</div></Reveal>
+          <Reveal className="academic-intro"><p className="section-kicker">{dictionary.academic.kicker}</p><h2>{dictionary.academic.title}</h2><p>{dictionary.academic.description}</p><div className="availability"><StatusDot size="md" /> {dictionary.academic.availability}</div><div className="academic-badges" aria-label={dictionary.academic.badgesLabel}>{dictionary.academic.badges.map((badge) => <span key={badge}><b>✓</b>{badge}</span>)}</div></Reveal>
           <Timeline />
         </div>
         <BeyondCode />
@@ -1043,7 +1036,7 @@ export function PortfolioHome() {
 
       <InteractiveTerminal />
       <Contact />
-      <footer className="site-footer"><a className="wordmark" href="#inicio">Jonathan <span>Cascante</span></a><div className="footer-copy"><p>Diseñado y desarrollado por Jonathan Cascante.</p><small>Costa Rica 🇨🇷</small></div><div className="footer-links"><a href="https://github.com/Psyckus" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer">LinkedIn</a></div></footer>
+      <footer className="site-footer"><a className="wordmark" href="#inicio">Jonathan <span>Cascante</span></a><div className="footer-copy"><p>{dictionary.footer.designed}</p><small>{dictionary.footer.location}</small></div><div className="footer-links"><a href="https://github.com/Psyckus" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer">LinkedIn</a></div></footer>
     </main>
   );
 }

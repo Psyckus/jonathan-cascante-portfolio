@@ -1,0 +1,295 @@
+{
+  "seo": {
+    "home": {
+      "title": "Jonathan Cascante | Desarrollador Full Stack",
+      "description": "Portafolio de Jonathan Cascante: proyectos en C#, .NET, APIs REST y desarrollo web Full Stack desde Costa Rica.",
+      "ogTitle": "Jonathan Cascante | Ingeniería de software Full Stack",
+      "ogDescription": "Proyectos, arquitectura y experiencia construyendo productos web confiables con C#, .NET y APIs REST."
+    },
+    "projects": {
+      "casanet": { "title": "Casa Net | Caso de estudio de Jonathan Cascante", "description": "Arquitectura, desafíos y resultados de Casa Net, plataforma inmobiliaria desarrollada con .NET 8." },
+      "ccss": { "title": "Gestión institucional CCSS | Jonathan Cascante", "description": "Caso de estudio sobre automatización de procesos institucionales, reglas de negocio y trazabilidad." },
+      "api-transferencias": { "title": "API de transferencias | Jonathan Cascante", "description": "Caso de estudio de una aplicación Flutter conectada a una Web API en C# para transferencias." }
+    }
+  },
+  "language": { "label": "Seleccionar idioma", "spanish": "Español", "english": "English", "es": "ES", "en": "EN" },
+  "nav": { "label": "Navegación principal", "homeLabel": "Jonathan Cascante, inicio", "projects": "Proyectos", "skills": "Habilidades", "experience": "Experiencia", "contact": "Contacto" },
+  "introMessages": ["Inicializando portafolio...", "Cargando componentes...", "Cargando proyectos...", "Cargando habilidades...", "Listo."],
+  "hero": {
+    "eyebrow": "Full Stack Developer · Costa Rica",
+    "headlineStart": "Construyo soluciones web que conectan",
+    "headlineIdea": "ideas",
+    "headlineJoin": "con",
+    "headlineResult": "resultados.",
+    "role": "C# / .NET · APIs REST · Aplicaciones empresariales",
+    "intro": "Transformo necesidades reales en productos confiables: backend robusto, interfaces claras y una arquitectura preparada para crecer.",
+    "viewProjects": "Ver proyectos",
+    "contactMe": "Contactarme",
+    "skillsLabel": "Tecnologías principales",
+    "statusLabel": "Estado profesional",
+    "available": "Disponible de inmediato",
+    "open": "Abierto a oportunidades",
+    "focus": "Backend & APIs",
+    "easterEgg": "Modo desarrollador desbloqueado · +30 enfoque",
+    "panel": {
+      "aria": "Sistema backend en vivo",
+      "online": "EN LÍNEA",
+      "layers": "Capas de la solución",
+      "liveRequest": "Solicitud en vivo",
+      "latency": "Latencia",
+      "editing": "EDITANDO",
+      "executing": "EJECUTANDO",
+      "response": "RESPUESTA",
+      "serverResponse": "RESPUESTA DEL SERVIDOR",
+      "pipeline": "Flujo de solicitud",
+      "processing": "procesando",
+      "waiting": "esperando",
+      "watcher": "observador",
+      "request": "solicitud",
+      "http": "http",
+      "changed": "cambió",
+      "running": "en ejecución",
+      "flows": {
+        "api": ["CLIENTE", "API .NET", "SERVICIO", "DATOS", "RESPUESTA"],
+        "db": ["API", "SERVICIO", "DAPPER", "MYSQL", "RESULTADO"],
+        "service": ["CLIENTE", "VALIDAR", "SERVICIO", "EVENTO", "RESPUESTA"],
+        "deploy": ["COMMIT", "PRUEBAS", "BUILD", "NUBE", "SALUD"]
+      }
+    }
+  },
+  "projectsSection": {
+    "kicker": "Trabajo seleccionado",
+    "title": "Proyectos que resuelven problemas reales.",
+    "description": "Cada proyecto combina decisiones técnicas con una necesidad concreta: organizar procesos, reducir fricción y entregar información confiable.",
+    "mainProjects": "Proyectos principales",
+    "integrations": "Integraciones aplicadas",
+    "caseStudies": "Casos de estudio",
+    "technologiesFor": "Tecnologías de",
+    "viewProject": "Ver proyecto",
+    "architecture": "Arquitectura",
+    "privateDemo": "Demo privada",
+    "privateDemoLabel": "Demo privada"
+  },
+  "architectureShowcase": {
+    "kicker": "Arquitectura viva",
+    "title": "Una solución completa, capa por capa.",
+    "description": "El flujo muestra cómo una acción del usuario atraviesa la aplicación y activa servicios especializados sin acoplar responsabilidades.",
+    "aria": "Diagrama de arquitectura por capas",
+    "nodes": ["Usuario", "MVC", "Servicio", "Repositorio", "MySQL"],
+    "entry": "Entrada",
+    "data": "Datos",
+    "layer": "Capa"
+  },
+  "portfolioStats": { "aria": "Resumen profesional", "technologies": "Tecnologías", "projects": "Proyectos", "years": "Años aprendiendo", "commitment": "Compromiso" },
+  "skillsSection": {
+    "kicker": "Capacidades",
+    "title": "De la base de datos a la interfaz.",
+    "description": "Selecciona una tecnología para ver dónde la aplico y qué valor aporta dentro de una solución real.",
+    "used": "tecnologías utilizadas",
+    "hint": "Selecciona una tecnología para ver cómo la aplico dentro de una solución real.",
+    "filterLabel": "Filtrar tecnologías por categoría",
+    "filters": { "all": "Todas", "backend": "Backend", "frontend": "Frontend", "datos": "Datos", "herramientas": "Herramientas" },
+    "search": "Buscar tecnología",
+    "catalogLabel": "Tecnologías agrupadas por categoría",
+    "technologyCount": "tecnologías",
+    "empty": "No encontré una tecnología con ese nombre.",
+    "selected": "Tecnología seleccionada",
+    "fields": { "where": "Dónde la utilicé", "project": "Proyecto", "problem": "Qué problema resolvió", "why": "Por qué la elegí", "learned": "Qué aprendí", "level": "Nivel aproximado" },
+    "preview": { "aria": "Contexto de uso de", "realUse": "uso real", "purpose": "software que genera valor", "technology": "tecnología", "context": "contexto", "project": "proyecto", "result": "resultado", "status": "estado", "interfaceFlow": "estado → componente → interfaz", "safeProps": "props seguras · interfaz predecible", "interfaceUpdated": "interfaz actualizada", "typedEntities": "filas → entidades tipadas", "mappingComplete": "mapeo completo", "expires": "expira en 18 min", "response": "respuesta en 2 ms", "documents": "12 documentos", "queryComplete": "consulta completa", "transactionCommitted": "transacción confirmada" },
+    "perspectives": {
+      "backend": { "choice": "Por el control del flujo, el tipado y la facilidad para separar responsabilidades.", "learning": "Diseñar contratos claros, aislar reglas de negocio y tratar los errores como parte del producto.", "mastery": "Intermedio · aplicación práctica" },
+      "frontend": { "choice": "Porque permitía construir una interfaz clara sin ocultar el comportamiento real del sistema.", "learning": "Diseñar estados predecibles, componentes reutilizables y experiencias responsive.", "mastery": "Intermedio · aplicación práctica" },
+      "datos": { "choice": "Por su ajuste al modelo de información, las consultas y las necesidades de rendimiento del proyecto.", "learning": "Modelar pensando en integridad, trazabilidad y costo de cada consulta.", "mastery": "Intermedio · aplicación práctica" },
+      "herramientas": { "choice": "Porque reducía fricción en pruebas, colaboración, documentación o despliegue.", "learning": "Automatizar tareas repetibles y mantener un flujo de entrega verificable.", "mastery": "Uso habitual en el flujo de trabajo" }
+    },
+    "overrides": {
+      "Dapper": { "choice": "Porque necesitaba consultas SQL explícitas, mapeo liviano y control sobre el rendimiento.", "learning": "Optimizar consultas sin mezclar acceso a datos con reglas de negocio.", "mastery": "Intermedio · utilizado en Casa Net" },
+      "Redis": { "choice": "Para sostener sesiones y caché sin aumentar accesos repetitivos a la base de datos.", "learning": "Diseñar expiración, renovación y fallbacks para estados distribuidos.", "mastery": "Intermedio · utilizado en Casa Net" },
+      "SignalR": { "choice": "Para entregar actualizaciones en tiempo real con una integración natural en .NET.", "learning": "Modelar eventos pequeños y mantener sincronizada la experiencia del usuario.", "mastery": "Intermedio · utilizado en Casa Net" },
+      "ASP.NET Core": { "choice": "Por su arquitectura modular, seguridad integrada y ecosistema para aplicaciones mantenibles.", "learning": "Separar controladores, servicios, repositorios y middleware con responsabilidades claras.", "mastery": "Intermedio · múltiples proyectos" },
+      "React": { "choice": "Para construir interacción mediante componentes reutilizables y estado predecible.", "learning": "Componer interfaces sin acoplar la presentación a los datos.", "mastery": "Intermedio · portafolio profesional" },
+      "TypeScript": { "choice": "Para detectar errores antes de ejecutar y mantener contratos claros entre componentes.", "learning": "Modelar datos y estados de interfaz con tipos útiles, no decorativos.", "mastery": "Intermedio · portafolio profesional" },
+      "JWT": { "choice": "Para proteger APIs con autenticación desacoplada y contratos verificables.", "learning": "Separar identidad, autorización y vigencia de credenciales.", "mastery": "Intermedio · APIs de autenticación" }
+    }
+  },
+  "marquee": { "kicker": "Stack tecnológico", "title": "Tecnologías con las que construyo soluciones.", "description": "Un recorrido por las herramientas, lenguajes y plataformas que he utilizado en proyectos reales.", "used": "tecnologías utilizadas", "rowOne": "Backend y frontend", "rowTwo": "Bases de datos y herramientas" },
+  "learning": {
+    "kicker": "Evolución constante",
+    "title": "Actualmente aprendiendo",
+    "description": "Temas que estoy fortaleciendo para diseñar soluciones más mantenibles, distribuidas y preparadas para la nube.",
+    "status": "En exploración",
+    "topics": [
+      { "name": "Arquitectura limpia", "description": "Separación de responsabilidades y mantenibilidad." },
+      { "name": "Microservicios", "description": "Diseño de servicios independientes y escalables." },
+      { "name": "Docker", "description": "Contenedores y entornos reproducibles." },
+      { "name": "Kubernetes", "description": "Orquestación y despliegue." },
+      { "name": "Azure", "description": "Servicios cloud y publicación." },
+      { "name": "Inteligencia Artificial", "description": "Integración de modelos y automatización." }
+    ]
+  },
+  "engineering": {
+    "kicker": "Decisiones técnicas",
+    "title": "Ingeniería detrás del código.",
+    "description": "No se trata solo de conocer herramientas, sino de entender cuándo aportan valor y qué compromiso introduce cada decisión.",
+    "decisions": [
+      { "technology": "Dapper", "question": "¿Por qué Dapper?", "answer": "Porque los módulos críticos necesitaban consultas SQL explícitas, rápidas y fáciles de optimizar.", "signal": "Control + rendimiento" },
+      { "technology": "Redis", "question": "¿Por qué Redis?", "answer": "Para mantener sesiones resilientes y reducir accesos repetitivos a la base de datos.", "signal": "Sesiones + caché" },
+      { "technology": "ASP.NET Core", "question": "¿Por qué ASP.NET Core?", "answer": "Por su arquitectura modular, tipado sólido y un ecosistema preparado para aplicaciones mantenibles.", "signal": "Arquitectura limpia" },
+      { "technology": "SignalR", "question": "¿Por qué SignalR?", "answer": "Para comunicar cambios en tiempo real sin obligar al usuario a recargar la interfaz.", "signal": "Tiempo real" },
+      { "technology": "JWT", "question": "¿Por qué JWT?", "answer": "Para desacoplar la autenticación y proteger contratos API de forma predecible.", "signal": "Seguridad + contratos" }
+    ]
+  },
+  "workProcess": {
+    "kicker": "Cómo trabajo",
+    "title": "Del problema a una entrega confiable.",
+    "description": "Un proceso claro reduce retrabajo, hace visibles las decisiones y mantiene el foco en el valor del producto.",
+    "steps": [
+      { "index": "01", "title": "Analizar", "detail": "Entender el problema y el contexto." },
+      { "index": "02", "title": "Diseñar", "detail": "Definir flujos, datos y responsabilidades." },
+      { "index": "03", "title": "Desarrollar", "detail": "Construir por capas y validar temprano." },
+      { "index": "04", "title": "Probar", "detail": "Cubrir reglas, errores y casos reales." },
+      { "index": "05", "title": "Documentar", "detail": "Dejar decisiones y contratos claros." },
+      { "index": "06", "title": "Entregar", "detail": "Publicar, observar y mejorar." }
+    ]
+  },
+  "academic": {
+    "kicker": "Experiencia académica",
+    "title": "Formación aplicada a escenarios reales.",
+    "description": "Mi experiencia se ha construido desarrollando soluciones completas, documentando procesos y validando resultados con usuarios reales.",
+    "availability": "Disponibilidad inmediata",
+    "badgesLabel": "Competencias aplicadas",
+    "badges": ["Desarrollo Full Stack", "APIs REST", "Backend", "Bases de datos", "Arquitectura", "Documentación técnica", "Validación con usuarios", "Trabajo en equipo"],
+    "journey": [
+      { "date": "2021", "title": "Diplomado en Tecnologías de Información", "text": "Construí una base técnica en programación, bases de datos, soporte y redes." },
+      { "date": "2023", "title": "Proyecto PHP · CCSS", "text": "Desarrollé módulos administrativos con reglas reales, trazabilidad y reportes." },
+      { "date": "2023", "title": "Inicio de Ingeniería Informática", "text": "Amplié mi formación hacia análisis, arquitectura y desarrollo de soluciones." },
+      { "date": "2025", "title": "Proyecto ASP.NET Core", "text": "Profundicé en C#, MVC, servicios, repositorios, seguridad e integraciones." },
+      { "date": "2026", "title": "Proyecto de graduación", "text": "Validé una solución institucional con usuarios, documentación y pruebas funcionales." },
+      { "date": "Actualidad", "title": "Buscando oportunidades Full Stack", "text": "Busco aportar en equipos donde pueda construir software útil y seguir creciendo." }
+    ]
+  },
+  "beyond": {
+    "kicker": "Más allá del código",
+    "title": "La curiosidad también se entrena fuera de la pantalla.",
+    "defaultContext": "Cuatro espacios que alimentan mi forma de pensar: estrategia, movimiento, perspectiva y una curiosidad que nunca se queda quieta.",
+    "contexts": { "gaming": "Estrategia, lógica y toma de decisiones en entornos interactivos.", "cycling": "Movimiento, constancia y claridad para volver con nuevas ideas.", "nature": "Perspectiva, equilibrio y espacios para observar con calma.", "learning": "Curiosidad constante para construir soluciones cada vez mejores." },
+    "cards": [
+      { "theme": "gaming", "index": "01", "label": "Jugar / Pensar", "title": "Videojuegos", "signal": "Estrategia + intuición", "text": "Analizo mecánicas, sistemas y decisiones. Cada partida es otra forma de entrenar la lógica y resolver problemas." },
+      { "theme": "cycling", "index": "02", "label": "Mover / Reiniciar", "title": "Ciclismo", "signal": "Ritmo + claridad", "text": "Recorrer nuevos caminos me ayuda a despejar la mente, recuperar perspectiva y volver con ideas más claras." },
+      { "theme": "nature", "index": "03", "label": "Explorar / Respirar", "title": "Naturaleza", "signal": "Perspectiva + equilibrio", "text": "Montañas, ríos y senderos me recuerdan el valor de observar, explorar con calma y disfrutar el proceso." },
+      { "theme": "learning", "index": "04", "label": "Aprender / Construir", "title": "Aprendizaje continuo", "signal": "Curiosidad + práctica", "text": "Exploro tecnologías y mejores prácticas para transformar conocimiento nuevo en software más simple y sólido." }
+    ],
+    "focus": "Enfoque 98",
+    "alwaysBeta": "Siempre en beta"
+  },
+  "philosophy": { "kicker": "Cómo pienso el desarrollo", "quote": "“No me gusta desarrollar únicamente código. Me gusta entender el problema, diseñar una solución limpia y construir software que realmente genere valor.”", "signals": ["Apasionado por construir software", "Enfoque backend", "Aprendizaje continuo"] },
+  "github": { "kicker": "GitHub público", "title": "Construcción visible, aprendizaje continuo.", "viewProfile": "Ver perfil", "fallback": "La actividad no está disponible en este momento. El perfil y los repositorios siguen accesibles directamente en GitHub.", "publicRepositories": "Repositorios públicos", "recentCommits": "Commits públicos recientes", "recentContributions": "Contribuciones recientes", "topLanguages": "Lenguajes principales", "loading": "Cargando", "latest": "Último proyecto actualizado", "consulting": "Consultando GitHub…" },
+  "terminal": {
+    "kicker": "Portfolio CLI",
+    "title": "Una terminal para explorar el perfil.",
+    "description": "Comandos cortos, información real y algunos easter eggs para quienes prueban más de lo evidente.",
+    "interactive": "interactiva",
+    "inputLabel": "Escribir comando en la terminal",
+    "run": "Ejecutar",
+    "welcome": ["Portfolio CLI v1.0.0", "Escribe “help” para explorar."],
+    "notFound": "comando no encontrado",
+    "tryHelp": "Prueba con “help”.",
+    "commands": {
+      "help": ["Comandos: about · skills · projects · contact · cv · linkedin · github · hire · clear"],
+      "about": ["Jonathan Cascante · Full Stack Developer", "C# / .NET · APIs REST · Aplicaciones empresariales"],
+      "projects": ["01 Casa Net", "02 Gestión institucional CCSS", "03 Transferencias interbancarias"],
+      "contact": ["Email: jonathan.cz141998@gmail.com", "Disponible para oportunidades Full Stack junior."],
+      "cv": ["CV listo: /CV_ES.pdf"],
+      "hire": ["Permiso concedido.", "Bienvenido a bordo. Construyamos algo útil."],
+      "sudo": ["sudo: permiso concedido sin contraseña.", "Jonathan está listo para entregar."],
+      "npm": ["se agregó 1 desarrollador altamente motivado en 0.8s", "0 vulnerabilidades encontradas."],
+      "coffee": ["Preparando arquitectura limpia… ☕", "Estado: listo para programar."]
+    }
+  },
+  "contact": { "kicker": "Hablemos", "title": "¿Tienes una oportunidad o un proyecto en mente?", "description": "Estoy disponible para roles junior de desarrollo de software y para colaborar en productos web donde pueda aportar con C#, .NET y APIs.", "copy": "Copiar correo", "copied": "Correo copiado ✓", "download": "Descargar CV", "linkedinLabel": "Abrir perfil de LinkedIn de Jonathan Cascante", "githubLabel": "Abrir perfil de GitHub de Jonathan Cascante" },
+  "footer": { "designed": "Diseñado y desarrollado por Jonathan Cascante.", "location": "Costa Rica 🇨🇷" },
+  "caseStudy": { "back": "Volver a proyectos", "case": "Caso de estudio", "viewArchitecture": "Ver arquitectura", "openDemo": "Abrir demo", "privateDemo": "Demo de acceso privado", "context": "El contexto", "problem": "Problema", "direction": "La dirección", "objective": "Objetivo", "contribution": "Mi aporte", "participation": "Participación", "technicalDesign": "Diseño técnico", "architectureTitle": "Arquitectura pensada para separar responsabilidades.", "execution": "Ejecución", "challengesTitle": "Desafíos que guiaron las decisiones.", "result": "Resultado", "resultTitle": "Una solución orientada a uso real.", "learnings": "Aprendizajes", "learningsTitle": "Lo que el proyecto dejó.", "next": "Siguiente caso", "nextTitle": "Explora otra solución.", "nextProject": "Ver siguiente proyecto", "architectureFor": "Arquitectura de", "entry": "Entrada", "persistence": "Persistencia", "layer": "Capa", "connectedServices": "Servicios conectados" },
+  "projectPreviews": {
+    "casanet": { "aria": "Vista representativa de Casa Net", "panel": "Panel inmobiliario", "properties": "Propiedades", "clients": "Clientes", "inquiries": "Consultas", "house": "Casa moderna", "apartment": "Apartamento" },
+    "ccss": { "aria": "Vista representativa del sistema institucional CCSS", "title": "Gestión institucional", "requests": "Solicitudes", "pending": "Pendientes", "resolved": "Resueltas", "request": "Solicitud", "status": "Estado", "date": "Fecha", "pendingOne": "Pendiente", "assigned": "Asignado", "today": "Hoy", "yesterday": "Ayer" },
+    "transfer": { "aria": "Vista representativa de transferencias interbancarias", "secure": "Operación segura", "transfer": "Transferir", "destination": "Cuenta destino", "amount": "Monto", "confirm": "Confirmar transferencia", "validating": "validando saldo", "authorized": "autorización vigente", "registered": "201 registrada" }
+  },
+  "projects": [
+    {
+      "title": "Casa Net", "shortTitle": "Casa Net", "label": "Plataforma web · Proyecto personal", "description": "Ecosistema inmobiliario desarrollado con .NET 8: publicación de propiedades, mapas, carga de imágenes, autenticación, notificaciones y una experiencia administrativa completa.",
+      "problem": "Publicar, organizar y consultar propiedades suele implicar información dispersa, procesos manuales y una experiencia distinta para clientes y administradores.", "objective": "Construir una plataforma inmobiliaria integral que centralizara propiedades, clientes, ubicaciones, archivos y comunicación sin sacrificar velocidad ni claridad.", "participation": "Diseñé y desarrollé la solución end-to-end: arquitectura, modelo de datos, backend, vistas Razor, autenticación, integraciones, carga de archivos y experiencia administrativa.", "architecture": "La aplicación usa una arquitectura MVC por capas. Los controladores coordinan servicios de negocio y repositorios Dapper; MySQL persiste la información, Redis gestiona sesiones y caché, SignalR distribuye eventos en tiempo real y servicios externos cubren correo, OAuth, mapas e imágenes.",
+      "challenges": ["Mantener sesiones resilientes y rápidas con Redis.", "Procesar imágenes y archivos sin afectar la experiencia de publicación.", "Sincronizar notificaciones en tiempo real entre áreas administrativas.", "Integrar OAuth, reCAPTCHA, mapas y correo bajo un flujo coherente."],
+      "result": "Una plataforma desplegada en producción con flujos completos para publicación, búsqueda, administración y comunicación inmobiliaria.", "learnings": "Profundicé en diseño por capas, observabilidad de flujos, seguridad web, optimización de consultas y decisiones de UX para productos con múltiples tipos de usuario.", "flow": ["Usuario", "ASP.NET MVC", "Servicio", "Repositorio", "MySQL"], "integrations": ["Redis", "SignalR", "SMTP", "OAuth", "Leaflet"]
+    },
+    {
+      "title": "Gestión institucional CCSS", "shortTitle": "CCSS", "label": "Proyecto de graduación · Caso real", "description": "Sistema institucional para automatizar procesos administrativos, aplicar reglas de negocio, mejorar la trazabilidad y facilitar el seguimiento operativo.",
+      "problem": "Procesos administrativos distribuidos entre controles manuales dificultaban la trazabilidad, la consulta de disponibilidad y el seguimiento oportuno de cada solicitud.", "objective": "Digitalizar procesos institucionales para siete edificios, centralizando solicitudes, estados, validaciones y reportes en una experiencia operativa consistente.", "participation": "Colaboré en levantamiento de requerimientos, diseño de módulos administrativos, integraciones REST, validaciones de negocio, documentación y pruebas funcionales con usuarios del proceso.", "architecture": "La solución concentra interfaz y lógica operativa en Oracle APEX, utiliza PL/SQL para reglas y procedimientos, Oracle Database para persistencia e integra componentes mediante APIs REST.",
+      "challenges": ["Traducir reglas operativas reales en validaciones consistentes.", "Mantener trazabilidad entre solicitudes, responsables y estados.", "Diseñar pantallas claras para usuarios con distintos niveles técnicos.", "Documentar y validar los flujos con evidencia funcional."],
+      "result": "Un sistema institucional orientado a reducir tareas manuales, mejorar el control operativo y facilitar el seguimiento de procesos administrativos.", "learnings": "Fortalecí la comunicación con usuarios, el análisis de requerimientos, el diseño de reglas de negocio y la importancia de validar una solución en su contexto real.", "flow": ["Funcionario", "Oracle APEX", "REST API", "PL/SQL", "Oracle DB"], "integrations": ["Reportes", "Validaciones", "Auditoría", "Dashboards"]
+    },
+    {
+      "title": "Transferencias interbancarias", "shortTitle": "API Transferencias", "label": "Aplicación móvil + API", "description": "Flujo seguro para registrar transferencias, validar fondos y autorizaciones, consultar moneda, mostrar el detalle de la operación y enviar confirmaciones por correo.",
+      "problem": "Una transferencia necesita validar múltiples condiciones antes de ejecutarse y comunicar el resultado con claridad sin duplicar operaciones ni ocultar errores.", "objective": "Crear un flujo móvil sencillo respaldado por una API capaz de validar saldo, estado, autorización y datos de la operación antes de registrar y notificar.", "participation": "Desarrollé el formulario en Flutter, los diálogos de confirmación y detalle, además de los endpoints C# para registro, consulta de moneda y envío de correo.", "architecture": "Flutter captura y valida la intención del usuario; una Web API en C# aplica reglas de negocio, consulta y persiste en SQL, y SMTP envía la confirmación de la operación.",
+      "challenges": ["Coordinar validaciones de interfaz y servidor sin duplicar lógica crítica.", "Evitar operaciones inválidas por saldo, estado o autorización.", "Presentar el detalle de la transferencia antes de confirmar.", "Manejar respuestas y errores de forma comprensible en móvil."],
+      "result": "Un flujo completo y verificable desde la captura de datos hasta el registro y la notificación por correo.", "learnings": "Mejoré el diseño de contratos API, manejo de estados asíncronos y separación entre validaciones de experiencia y reglas críticas del servidor.", "flow": ["Usuario móvil", "Flutter", "C# Web API", "Servicio", "SQL"], "integrations": ["SMTP", "Moneda", "Autorización", "Logs"]
+    }
+  ],
+  "skillCategories": [
+    {
+      "id": "backend", "label": "Backend", "description": "APIs, reglas de negocio, seguridad y servicios empresariales.",
+      "skills": [
+        { "context": "Backend, APIs e integraciones.", "project": "Casa Net · Transferencias interbancarias · Lover2023Cuc", "use": "Lógica de negocio, servicios, validaciones y endpoints REST." },
+        { "context": "Plataformas web empresariales.", "project": "Casa Net", "use": "Runtime principal para una aplicación MVC moderna, escalable y desplegada." },
+        { "context": "Backend y aplicaciones MVC.", "project": "Casa Net · APIs en C#", "use": "Controladores, servicios, autenticación, middleware y flujos web." },
+        { "context": "Aplicaciones web por capas.", "project": "Lover2023Cuc · Proyectos académicos", "use": "Separación de responsabilidades mediante modelos, vistas y controladores." },
+        { "context": "Integración entre interfaces y servicios.", "project": "CCSS · Casa Net · Transferencias interbancarias", "use": "Contratos HTTP para consultar, validar y registrar operaciones." },
+        { "context": "Backend web y módulos administrativos.", "project": "Módulos de parqueo y multimedia CCSS · Laravel API", "use": "Lógica del servidor, reglas operativas, autenticación y acceso a datos." },
+        { "context": "Automatización y herramientas técnicas.", "project": "Administración remota de servicios · Scripts y APIs", "use": "Automatización de procesos, control de servicios Windows/Linux y utilidades." },
+        { "context": "Aplicaciones orientadas a objetos.", "project": "Sistemas Java y proyectos académicos", "use": "Modelado de dominio, lógica empresarial y construcción de servicios." },
+        { "context": "Servicios backend con Java.", "project": "Sistemas Java", "use": "Creación de APIs, configuración de servicios y arquitectura por capas." },
+        { "context": "Persistencia en aplicaciones .NET.", "project": "Aplicaciones ASP.NET Core", "use": "ORM para modelar entidades, relaciones y operaciones sobre bases de datos." },
+        { "context": "Acceso a datos de alto control.", "project": "Casa Net", "use": "Consultas SQL explícitas, mapeo liviano y repositorios eficientes." },
+        { "context": "Persistencia en aplicaciones Java.", "project": "Sistemas Java", "use": "ORM para mapear entidades y gestionar operaciones de persistencia." },
+        { "context": "Seguridad de APIs.", "project": "APIs de autenticación y proyectos web", "use": "Emisión y validación de tokens para proteger recursos y sesiones." },
+        { "context": "Inicio de sesión e identidad externa.", "project": "Casa Net · Integración con Google", "use": "Autenticación delegada y acceso seguro mediante proveedores externos." },
+        { "context": "Comunicación en tiempo real.", "project": "Casa Net", "use": "Notificaciones instantáneas y actualización de información sin recargar." }
+      ]
+    },
+    {
+      "id": "frontend", "label": "Frontend", "description": "Interfaces responsive, claras y conectadas con procesos reales.",
+      "skills": [
+        { "context": "Estructura semántica de interfaces web.", "project": "Casa Net · CCSS · Aplicaciones web", "use": "Construcción de vistas accesibles, formularios y contenido estructurado." },
+        { "context": "Diseño responsive y sistemas visuales.", "project": "Casa Net · Dashboards · Portafolio", "use": "Layouts, adaptación móvil, estados visuales y microinteracciones." },
+        { "context": "Interacción en el navegador.", "project": "Casa Net · CCSS · Aplicaciones administrativas", "use": "Validaciones, eventos, consumo de APIs y comportamiento dinámico." },
+        { "context": "Aplicaciones frontend y componentes React con tipado estático.", "project": "Portafolio profesional y proyectos web modernos.", "use": "Tipado seguro, mantenibilidad, reducción de errores y mejor organización del código." },
+        { "context": "Desarrollo de interfaces modernas basadas en componentes.", "project": "Portafolio profesional y aplicaciones frontend.", "use": "Componentes reutilizables, estado, interacción y construcción de interfaces dinámicas." },
+        { "context": "Interfaces web responsive.", "project": "Casa Net · Sistemas administrativos", "use": "Componentes, grids, modales y adaptación consistente entre dispositivos." },
+        { "context": "Flujos administrativos dinámicos.", "project": "Casa Net · Módulos CCSS", "use": "Eventos, peticiones asíncronas, tablas y manipulación controlada de interfaz." },
+        { "context": "Vistas del ecosistema ASP.NET.", "project": "Casa Net", "use": "Renderizado de interfaces MVC conectadas con ViewModels y lógica del servidor." },
+        { "context": "Aplicaciones móviles multiplataforma.", "project": "Transferencias interbancarias", "use": "Formularios, navegación, diálogos y estados asíncronos en móvil." }
+      ]
+    },
+    {
+      "id": "datos", "label": "Bases de datos", "description": "Modelado, consultas, procedimientos, caché y persistencia.",
+      "skills": [
+        { "context": "Persistencia en aplicaciones Microsoft.", "project": "Lover2023Cuc · Aplicaciones ASP.NET", "use": "Modelado relacional, consultas y operaciones transaccionales." },
+        { "context": "Persistencia de aplicaciones web.", "project": "Casa Net · Sistemas PHP · Laravel API", "use": "Diseño relacional, consultas, reportes y soporte de flujos empresariales." },
+        { "context": "Datos institucionales.", "project": "Proyecto de graduación CCSS", "use": "Persistencia, relaciones y soporte de procesos administrativos." },
+        { "context": "Desarrollo low-code empresarial.", "project": "Proyecto de graduación CCSS", "use": "Módulos administrativos, dashboards y flujos conectados con Oracle." },
+        { "context": "Persistencia documental.", "project": "Prototipo inmobiliario Next.js + Prisma", "use": "Almacenamiento flexible de propiedades con estructuras y colecciones complejas." },
+        { "context": "Sesiones y caché distribuida.", "project": "Casa Net", "use": "Sesiones resilientes, renovación controlada y reducción de accesos repetitivos." },
+        { "context": "Lógica cercana a los datos.", "project": "Proyecto de graduación CCSS", "use": "Procedimientos, consultas y validaciones dentro del ecosistema Oracle." }
+      ]
+    },
+    {
+      "id": "herramientas", "label": "Herramientas", "description": "Flujo de trabajo, documentación, pruebas y despliegue.",
+      "skills": [
+        { "context": "Control de versiones.", "project": "Todos los proyectos principales", "use": "Historial de cambios, ramas y evolución segura del código." },
+        { "context": "Colaboración y portafolio técnico.", "project": "Casa Net · APIs · Proyectos personales", "use": "Repositorios, respaldo, revisión y presentación del trabajo." },
+        { "context": "Pruebas de servicios HTTP.", "project": "APIs REST en C#, PHP y Laravel", "use": "Validación de endpoints, cuerpos, autenticación y respuestas." },
+        { "context": "Documentación de APIs.", "project": "Web APIs con ASP.NET Core", "use": "Exploración, documentación y prueba de contratos REST." },
+        { "context": "Entornos reproducibles.", "project": "Prácticas y entornos de desarrollo", "use": "Contenedores para aislar dependencias y preparar despliegues consistentes." }
+      ]
+    }
+  ]
+}
