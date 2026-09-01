@@ -103,7 +103,6 @@ public/
 - El correo y los enlaces profesionales están definidos en `app/components/portfolio-home.tsx`.
 - El CV se publica como un archivo descargable dentro de `public/`.
 - Las animaciones respetan `prefers-reduced-motion` y reducen efectos en dispositivos de menor capacidad.
-- No se incluyen archivos internos de ChatGPT, credenciales, cachés, compilaciones previas ni dependencias instaladas.
 
 ## Licencia
 
