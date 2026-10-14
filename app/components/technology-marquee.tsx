@@ -1,3 +1,5 @@
+"use client";
+
 import type { CSSProperties } from "react";
 import type { SimpleIcon } from "simple-icons";
 import {
@@ -26,7 +28,7 @@ import {
   siSwagger,
   siTypescript,
 } from "simple-icons";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useI18n } from "../i18n/i18n-provider";
 import { getSkillCategories, getSkills, type Skill, type TechnologyIconId } from "../lib/projects";
 import { TechIcon, type TechType } from "./icons";
@@ -94,13 +96,23 @@ export function TechnologyMarquee() {
   const copy = dictionary.marquee;
   const skillCategories = useMemo(() => getSkillCategories(dictionary), [dictionary]);
   const skills = useMemo(() => getSkills(dictionary), [dictionary]);
+  const section = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(false);
   const rows = [
     { label: copy.rowOne, technologies: skillCategories.slice(0, 2).flatMap((category) => category.skills) },
     { label: copy.rowTwo, technologies: skillCategories.slice(2).flatMap((category) => category.skills) },
   ];
 
+  useEffect(() => {
+    const node = section.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting), { rootMargin: "180px 0px" });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="technology-marquee-section" aria-labelledby="technology-marquee-title">
+    <section ref={section} className={`technology-marquee-section ${active ? "is-active" : "is-paused"}`} aria-labelledby="technology-marquee-title">
       <div className="technology-marquee-heading">
         <div>
           <p className="section-kicker">{copy.kicker}</p>

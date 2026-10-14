@@ -2,12 +2,10 @@
 
 import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowIcon, CheckIcon, CopyIcon, DownloadIcon, ExternalIcon, GitHubIcon, LinkedInIcon, TechIcon, type TechType } from "./icons";
 import { ProjectPreview } from "./project-preview";
-import { EngineeringDecisions, GitHubActivity, InteractiveTerminal, PortfolioStats, WorkProcess } from "./premium-sections";
 import { StatusDot } from "./status-dot";
-import { TechnologyMarquee } from "./technology-marquee";
 import { LanguageSwitcher } from "./language-switcher";
 import { useI18n } from "../i18n/i18n-provider";
 import { getProjects, getSkillCategories, getSkills, type Project, type Skill, type SkillCategoryId } from "../lib/projects";
@@ -19,6 +17,13 @@ type SectionId = (typeof observedSections)[number];
 type SkillPerspective = { choice: string; learning: string; mastery: string };
 type BeyondTheme = "gaming" | "cycling" | "nature" | "learning";
 type BeyondItem = { theme: BeyondTheme; index: string; label: string; title: string; signal: string; text: string };
+
+const LazyTechnologyMarquee = lazy(() => import("./technology-marquee").then((module) => ({ default: module.TechnologyMarquee })));
+const LazyPortfolioStats = lazy(() => import("./premium-sections").then((module) => ({ default: module.PortfolioStats })));
+const LazyEngineeringDecisions = lazy(() => import("./premium-sections").then((module) => ({ default: module.EngineeringDecisions })));
+const LazyWorkProcess = lazy(() => import("./premium-sections").then((module) => ({ default: module.WorkProcess })));
+const LazyGitHubActivity = lazy(() => import("./premium-sections").then((module) => ({ default: module.GitHubActivity })));
+const LazyInteractiveTerminal = lazy(() => import("./premium-sections").then((module) => ({ default: module.InteractiveTerminal })));
 
 const heroModes: Record<TechType, { label: string; detail: string; path: string; flow: string[] }> = {
   api: { label: "API", detail: "Controllers", path: "~/backend/controllers", flow: ["CLIENTE", "API .NET", "SERVICE", "DATA", "RESPUESTA"] },
@@ -188,13 +193,43 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
   return (
     <motion.div
       className={className}
-      initial={reduced ? false : { opacity: 0, y: 24, filter: "blur(10px)" }}
-      whileInView={reduced ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={reduced ? false : { opacity: 0, y: 24 }}
+      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}
       transition={{ duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
+  );
+}
+
+function DeferredMount({ children, minHeight = 240 }: { children: React.ReactNode; minHeight?: number }) {
+  const container = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const node = container.current;
+    if (!node) return;
+    if (!("IntersectionObserver" in window)) {
+      let active = true;
+      queueMicrotask(() => {
+        if (active) setReady(true);
+      });
+      return () => { active = false; };
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setReady(true);
+      observer.disconnect();
+    }, { rootMargin: "900px 0px" });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={container} className="deferred-mount" data-ready={ready} style={ready ? undefined : { minHeight }}>
+      {ready ? <Suspense fallback={null}>{children}</Suspense> : null}
+    </div>
   );
 }
 
@@ -220,33 +255,6 @@ function GlowSurface({ children, className = "", id }: { children: React.ReactNo
   }, []);
 
   return <section ref={ref} id={id} className={`glow-surface ${className}`} onPointerMove={move}>{children}</section>;
-}
-
-function IntroOverlay() {
-  const [show, setShow] = useState(false);
-  const [step, setStep] = useState(0);
-  const reduced = useReducedMotion();
-  const { dictionary } = useI18n();
-  const introMessages = dictionary.introMessages;
-  const messageCount = introMessages.length;
-  useEffect(() => {
-    if (reduced || sessionStorage.getItem("portfolio-intro")) return;
-    sessionStorage.setItem("portfolio-intro", "seen");
-    const timers = [window.setTimeout(() => setShow(true), 0)];
-    Array.from({ length: messageCount }, (_, index) => timers.push(window.setTimeout(() => setStep(index), index * 135)));
-    timers.push(window.setTimeout(() => setShow(false), 760));
-    return () => timers.forEach(window.clearTimeout);
-  }, [messageCount, reduced]);
-
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.div className="intro-overlay" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }} aria-live="polite">
-          <div><span>&gt;_</span><AnimatePresence mode="wait"><motion.code key={step} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .12 }}>{introMessages[step]}</motion.code></AnimatePresence></div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
 }
 
 function Header() {
@@ -299,6 +307,8 @@ function HeroCode() {
   const { dictionary } = useI18n();
   const panelCopy = dictionary.hero.panel;
   const panel = useRef<HTMLDivElement>(null);
+  const panelVisible = useInView(panel, { amount: .12 });
+  const [pageVisible, setPageVisible] = useState(true);
   const pointerFrame = useRef(0);
   const rawRotateX = useMotionValue(0);
   const rawRotateY = useMotionValue(0);
@@ -312,6 +322,14 @@ function HeroCode() {
   const snippet = useMemo(() => view.lines.join("\n"), [view]);
 
   useEffect(() => {
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!panelVisible || !pageVisible) return;
     if (reduced) {
       const timer = window.setTimeout(() => {
         setChars(snippet.length);
@@ -328,10 +346,16 @@ function HeroCode() {
     }, 0);
     const start = performance.now();
     let frame = 0;
+    let lastPaint = 0;
+    let lastChars = -1;
     const type = (time: number) => {
       const progress = Math.min(1, (time - start) / 1500);
       const next = Math.min(snippet.length, Math.floor(snippet.length * progress));
-      setChars(next);
+      if ((time - lastPaint >= 34 || progress === 1) && next !== lastChars) {
+        lastPaint = time;
+        lastChars = next;
+        setChars(next);
+      }
       if (next < snippet.length) frame = requestAnimationFrame(type);
     };
     frame = requestAnimationFrame(type);
@@ -344,7 +368,7 @@ function HeroCode() {
       timers.forEach(window.clearTimeout);
       cancelAnimationFrame(frame);
     };
-  }, [config.flow.length, mode, reduced, requestIndex, snippet.length]);
+  }, [config.flow.length, mode, pageVisible, panelVisible, reduced, requestIndex, snippet.length]);
 
   const move = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     if (reduced || event.pointerType === "touch" || !panel.current || document.documentElement.dataset.motionProfile === "reduced-effects") return;
@@ -971,6 +995,25 @@ export function PortfolioHome() {
   }, []);
 
   useEffect(() => {
+    const root = document.documentElement;
+    const hero = document.getElementById("inicio");
+    const updatePageVisibility = () => { root.dataset.pageHidden = String(document.hidden); };
+    updatePageVisibility();
+    document.addEventListener("visibilitychange", updatePageVisibility);
+    if (!hero) return () => document.removeEventListener("visibilitychange", updatePageVisibility);
+    const observer = new IntersectionObserver(([entry]) => {
+      root.dataset.heroActive = String(entry.isIntersecting);
+    }, { threshold: .03 });
+    observer.observe(hero);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updatePageVisibility);
+      delete root.dataset.pageHidden;
+      delete root.dataset.heroActive;
+    };
+  }, []);
+
+  useEffect(() => {
     const sequence = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
     let progress = 0;
     let hideTimer = 0;
@@ -992,7 +1035,6 @@ export function PortfolioHome() {
 
   return (
     <main>
-      <IntroOverlay />
       <AnimatePresence>{konamiUnlocked && <motion.div className="easter-toast" initial={reduced ? false : { opacity: 0, y: 12, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduced ? undefined : { opacity: 0, y: 7 }} transition={{ duration: reduced ? 0 : .3 }}><StatusDot />{dictionary.hero.easterEgg}</motion.div>}</AnimatePresence>
       <div className="ambient-particles" aria-hidden="true"><i /><i /><i /><i /><i /></div>
       <Header />
@@ -1016,25 +1058,25 @@ export function PortfolioHome() {
         <ArchitectureShowcase />
       </GlowSurface>
 
-      <PortfolioStats />
+      <DeferredMount minHeight={150}><LazyPortfolioStats /></DeferredMount>
 
       <section className="section profile-section" id="habilidades">
         <Reveal className="section-heading compact"><div><p className="section-kicker">{dictionary.skillsSection.kicker}</p><h2>{dictionary.skillsSection.title}</h2></div><p>{dictionary.skillsSection.description}</p></Reveal>
         <Reveal delay={.08}><SkillsExplorer /></Reveal>
-        <TechnologyMarquee />
+        <DeferredMount minHeight={420}><LazyTechnologyMarquee /></DeferredMount>
         <LearningBlock />
-        <EngineeringDecisions />
-        <WorkProcess />
+        <DeferredMount minHeight={720}><LazyEngineeringDecisions /></DeferredMount>
+        <DeferredMount minHeight={420}><LazyWorkProcess /></DeferredMount>
         <div className="academic" id="experiencia">
           <Reveal className="academic-intro"><p className="section-kicker">{dictionary.academic.kicker}</p><h2>{dictionary.academic.title}</h2><p>{dictionary.academic.description}</p><div className="availability"><StatusDot size="md" /> {dictionary.academic.availability}</div><div className="academic-badges" aria-label={dictionary.academic.badgesLabel}>{dictionary.academic.badges.map((badge) => <span key={badge}><b>✓</b>{badge}</span>)}</div></Reveal>
           <Timeline />
         </div>
         <BeyondCode />
         <Philosophy />
-        <GitHubActivity />
+        <DeferredMount minHeight={430}><LazyGitHubActivity /></DeferredMount>
       </section>
 
-      <InteractiveTerminal />
+      <DeferredMount minHeight={620}><LazyInteractiveTerminal /></DeferredMount>
       <Contact />
       <footer className="site-footer"><a className="wordmark" href="#inicio">Jonathan <span>Cascante</span></a><div className="footer-copy"><p>{dictionary.footer.designed}</p><small>{dictionary.footer.location}</small></div><div className="footer-links"><a href="https://github.com/Psyckus" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/jonathan-cascante-dev" target="_blank" rel="noreferrer">LinkedIn</a></div></footer>
     </main>
