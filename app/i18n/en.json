@@ -13,14 +13,14 @@
     }
   },
   "language": { "label": "Select language", "spanish": "Español", "english": "English", "es": "ES", "en": "EN" },
-  "nav": { "label": "Main navigation", "homeLabel": "Jonathan Cascante, home", "projects": "Projects", "skills": "Skills", "experience": "Experience", "contact": "Contact" },
+  "nav": { "label": "Main navigation", "menu": "Menu", "projects": "Projects", "skills": "Skills", "experience": "Experience", "contact": "Contact" },
   "introMessages": ["Initializing portfolio...", "Loading components...", "Loading projects...", "Loading skills...", "Done."],
   "hero": {
     "eyebrow": "Full Stack Developer · Costa Rica",
-    "headlineStart": "I build web solutions that connect",
-    "headlineIdea": "ideas",
-    "headlineJoin": "with",
-    "headlineResult": "results.",
+    "headlineStart": "I build",
+    "headlineIdea": "APIs",
+    "headlineJoin": "and business applications with",
+    "headlineResult": "C# and .NET.",
     "role": "C# / .NET · REST APIs · Enterprise applications",
     "intro": "I turn real needs into reliable products: robust backends, clear interfaces, and architecture designed to grow.",
     "viewProjects": "View projects",
@@ -37,6 +37,7 @@
       "layers": "Solution layers",
       "liveRequest": "Live request",
       "latency": "Latency",
+      "replay": "Simulate another request",
       "editing": "EDITING",
       "executing": "EXECUTING",
       "response": "RESPONSE",
@@ -66,6 +67,8 @@
     "caseStudies": "Case studies",
     "technologiesFor": "Technologies used in",
     "viewProject": "View project",
+    "featured": "Featured project",
+    "liveDemo": "Live demo",
     "architecture": "Architecture",
     "privateDemo": "Private demo",
     "privateDemoLabel": "Private demo"
@@ -80,7 +83,7 @@
     "data": "Data",
     "layer": "Layer"
   },
-  "portfolioStats": { "aria": "Professional summary", "technologies": "Technologies", "projects": "Projects", "years": "Years learning", "commitment": "Commitment" },
+  "portfolioStats": { "aria": "Professional summary", "technologies": "Technologies", "publicDemos": "Public demos" },
   "skillsSection": {
     "kicker": "Capabilities",
     "title": "From the database to the interface.",
@@ -206,7 +209,7 @@
       "coffee": ["Brewing clean architecture… ☕", "Status: ready to code."]
     }
   },
-  "contact": { "kicker": "Let's talk", "title": "Do you have an opportunity or a project in mind?", "description": "I am available for junior software development roles and to collaborate on web products where I can contribute with C#, .NET, and APIs.", "copy": "Copy email", "copied": "Email copied ✓", "download": "Download CV", "linkedinLabel": "Open Jonathan Cascante's LinkedIn profile", "githubLabel": "Open Jonathan Cascante's GitHub profile" },
+  "contact": { "kicker": "Let's talk", "title": "Do you have an opportunity or a project in mind?", "description": "I am available for junior software development roles and to collaborate on web products where I can contribute with C#, .NET, and APIs.", "write": "Email me", "copy": "Copy email", "copied": "Email copied ✓", "copyFailed": "Select the email address to copy it", "download": "Download CV" },
   "footer": { "designed": "Designed and developed by Jonathan Cascante.", "location": "Costa Rica 🇨🇷" },
   "caseStudy": { "back": "Back to projects", "case": "Case study", "viewArchitecture": "View architecture", "openDemo": "Open demo", "privateDemo": "Private-access demo", "context": "The context", "problem": "Problem", "direction": "The direction", "objective": "Objective", "contribution": "My contribution", "participation": "Participation", "technicalDesign": "Technical design", "architectureTitle": "Architecture designed to separate responsibilities.", "execution": "Execution", "challengesTitle": "Challenges that guided the decisions.", "result": "Result", "resultTitle": "A solution built for real use.", "learnings": "Learnings", "learningsTitle": "What the project taught me.", "next": "Next case", "nextTitle": "Explore another solution.", "nextProject": "View next project", "architectureFor": "Architecture for", "entry": "Entry", "persistence": "Persistence", "layer": "Layer", "connectedServices": "Connected services" },
   "projectPreviews": {

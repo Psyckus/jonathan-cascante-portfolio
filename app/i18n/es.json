@@ -13,14 +13,14 @@
     }
   },
   "language": { "label": "Seleccionar idioma", "spanish": "Español", "english": "English", "es": "ES", "en": "EN" },
-  "nav": { "label": "Navegación principal", "homeLabel": "Jonathan Cascante, inicio", "projects": "Proyectos", "skills": "Habilidades", "experience": "Experiencia", "contact": "Contacto" },
+  "nav": { "label": "Navegación principal", "menu": "Menú", "projects": "Proyectos", "skills": "Habilidades", "experience": "Experiencia", "contact": "Contacto" },
   "introMessages": ["Inicializando portafolio...", "Cargando componentes...", "Cargando proyectos...", "Cargando habilidades...", "Listo."],
   "hero": {
     "eyebrow": "Full Stack Developer · Costa Rica",
-    "headlineStart": "Construyo soluciones web que conectan",
-    "headlineIdea": "ideas",
-    "headlineJoin": "con",
-    "headlineResult": "resultados.",
+    "headlineStart": "Desarrollo",
+    "headlineIdea": "APIs",
+    "headlineJoin": "y aplicaciones empresariales con",
+    "headlineResult": "C# y .NET.",
     "role": "C# / .NET · APIs REST · Aplicaciones empresariales",
     "intro": "Transformo necesidades reales en productos confiables: backend robusto, interfaces claras y una arquitectura preparada para crecer.",
     "viewProjects": "Ver proyectos",
@@ -37,6 +37,7 @@
       "layers": "Capas de la solución",
       "liveRequest": "Solicitud en vivo",
       "latency": "Latencia",
+      "replay": "Simular otra consulta",
       "editing": "EDITANDO",
       "executing": "EJECUTANDO",
       "response": "RESPUESTA",
@@ -66,6 +67,8 @@
     "caseStudies": "Casos de estudio",
     "technologiesFor": "Tecnologías de",
     "viewProject": "Ver proyecto",
+    "featured": "Proyecto destacado",
+    "liveDemo": "Demo en vivo",
     "architecture": "Arquitectura",
     "privateDemo": "Demo privada",
     "privateDemoLabel": "Demo privada"
@@ -80,7 +83,7 @@
     "data": "Datos",
     "layer": "Capa"
   },
-  "portfolioStats": { "aria": "Resumen profesional", "technologies": "Tecnologías", "projects": "Proyectos", "years": "Años aprendiendo", "commitment": "Compromiso" },
+  "portfolioStats": { "aria": "Resumen profesional", "technologies": "Tecnologías", "publicDemos": "Demos públicas" },
   "skillsSection": {
     "kicker": "Capacidades",
     "title": "De la base de datos a la interfaz.",
@@ -206,7 +209,7 @@
       "coffee": ["Preparando arquitectura limpia… ☕", "Estado: listo para programar."]
     }
   },
-  "contact": { "kicker": "Hablemos", "title": "¿Tienes una oportunidad o un proyecto en mente?", "description": "Estoy disponible para roles junior de desarrollo de software y para colaborar en productos web donde pueda aportar con C#, .NET y APIs.", "copy": "Copiar correo", "copied": "Correo copiado ✓", "download": "Descargar CV", "linkedinLabel": "Abrir perfil de LinkedIn de Jonathan Cascante", "githubLabel": "Abrir perfil de GitHub de Jonathan Cascante" },
+  "contact": { "kicker": "Hablemos", "title": "¿Tienes una oportunidad o un proyecto en mente?", "description": "Estoy disponible para roles junior de desarrollo de software y para colaborar en productos web donde pueda aportar con C#, .NET y APIs.", "write": "Escribirme", "copy": "Copiar correo", "copied": "Correo copiado ✓", "copyFailed": "Selecciona el correo para copiarlo", "download": "Descargar CV" },
   "footer": { "designed": "Diseñado y desarrollado por Jonathan Cascante.", "location": "Costa Rica 🇨🇷" },
   "caseStudy": { "back": "Volver a proyectos", "case": "Caso de estudio", "viewArchitecture": "Ver arquitectura", "openDemo": "Abrir demo", "privateDemo": "Demo de acceso privado", "context": "El contexto", "problem": "Problema", "direction": "La dirección", "objective": "Objetivo", "contribution": "Mi aporte", "participation": "Participación", "technicalDesign": "Diseño técnico", "architectureTitle": "Arquitectura pensada para separar responsabilidades.", "execution": "Ejecución", "challengesTitle": "Desafíos que guiaron las decisiones.", "result": "Resultado", "resultTitle": "Una solución orientada a uso real.", "learnings": "Aprendizajes", "learningsTitle": "Lo que el proyecto dejó.", "next": "Siguiente caso", "nextTitle": "Explora otra solución.", "nextProject": "Ver siguiente proyecto", "architectureFor": "Arquitectura de", "entry": "Entrada", "persistence": "Persistencia", "layer": "Capa", "connectedServices": "Servicios conectados" },
   "projectPreviews": {

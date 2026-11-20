@@ -1,6 +1,11 @@
-import { getDictionary, type Dictionary } from "../i18n/config";
+import type { Dictionary } from "../i18n/config";
 
-export type ProjectSlug = "casanet" | "ccss" | "api-transferencias";
+export const projectSlugs = ["casanet", "ccss", "api-transferencias"] as const;
+export type ProjectSlug = (typeof projectSlugs)[number];
+
+export function isProjectSlug(value: string): value is ProjectSlug {
+  return projectSlugs.includes(value as ProjectSlug);
+}
 
 export type Project = {
   slug: ProjectSlug;
@@ -22,13 +27,12 @@ export type Project = {
   flow: string[];
   integrations: string[];
   demoUrl?: string;
-  githubUrl: string;
 };
 
 const projectDefinitions = [
-  { slug: "casanet", index: "01", technologies: ["ASP.NET Core MVC", "Dapper", "Redis", "SignalR", "MySQL"], accent: "orange", mark: "CN", demoUrl: "https://casanetcr.com", githubUrl: "https://github.com/Psyckus" },
-  { slug: "ccss", index: "02", technologies: ["Oracle APEX", "Oracle Database", "REST APIs", "PL/SQL", "JavaScript"], accent: "blue", mark: "CCSS", githubUrl: "https://github.com/Psyckus" },
-  { slug: "api-transferencias", index: "03", technologies: ["Flutter", "C#", "Web API", "SQL", "SMTP"], accent: "green", mark: "API", githubUrl: "https://github.com/Psyckus" },
+  { slug: "casanet", index: "01", technologies: ["ASP.NET Core MVC", "Dapper", "Redis", "SignalR", "MySQL"], accent: "orange", mark: "CN", demoUrl: "https://casanetcr.com" },
+  { slug: "ccss", index: "02", technologies: ["Oracle APEX", "Oracle Database", "REST APIs", "PL/SQL", "JavaScript"], accent: "blue", mark: "CCSS" },
+  { slug: "api-transferencias", index: "03", technologies: ["Flutter", "C#", "Web API", "SQL", "SMTP"], accent: "green", mark: "API" },
 ] as const;
 
 export function getProjects(dictionary: Dictionary): Project[] {
@@ -129,12 +133,3 @@ export function getSkillCategories(dictionary: Dictionary): SkillCategory[] {
     };
   });
 }
-
-export function getSkills(dictionary: Dictionary) {
-  return getSkillCategories(dictionary).flatMap((category) => category.skills);
-}
-
-export const projects = getProjects(getDictionary("es"));
-export const skillCategories = getSkillCategories(getDictionary("es"));
-export const skills = skillCategories.flatMap((category) => category.skills);
-export const projectBySlug = (slug: ProjectSlug) => projects.find((project) => project.slug === slug)!;

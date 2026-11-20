@@ -17,8 +17,3 @@ export function isLocale(value: string): value is Locale {
 export function getDictionary(locale: Locale): Dictionary {
   return dictionaries[locale];
 }
-
-export function localeFromPathname(pathname: string): Locale | null {
-  const segment = pathname.split("/").filter(Boolean)[0];
-  return segment && isLocale(segment) ? segment : null;
-}

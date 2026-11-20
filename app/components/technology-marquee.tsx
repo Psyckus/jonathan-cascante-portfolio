@@ -1,64 +1,7 @@
-"use client";
-
 import type { CSSProperties } from "react";
-import type { SimpleIcon } from "simple-icons";
-import {
-  siBootstrap,
-  siCss,
-  siDocker,
-  siDotnet,
-  siFlutter,
-  siGit,
-  siGithub,
-  siHibernate,
-  siHtml5,
-  siJavascript,
-  siJquery,
-  siJsonwebtokens,
-  siMongodb,
-  siMysql,
-  siOpenid,
-  siOpenjdk,
-  siPhp,
-  siPostman,
-  siPython,
-  siReact,
-  siRedis,
-  siSpringboot,
-  siSwagger,
-  siTypescript,
-} from "simple-icons";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useI18n } from "../i18n/i18n-provider";
-import { getSkillCategories, getSkills, type Skill, type TechnologyIconId } from "../lib/projects";
+import type { Dictionary } from "../i18n/config";
+import type { Skill, SkillCategory, TechnologyIconId } from "../lib/projects";
 import { TechIcon, type TechType } from "./icons";
-
-const brandIcons: Partial<Record<TechnologyIconId, SimpleIcon>> = {
-  bootstrap: siBootstrap,
-  css: siCss,
-  docker: siDocker,
-  dotnet: siDotnet,
-  flutter: siFlutter,
-  git: siGit,
-  github: siGithub,
-  hibernate: siHibernate,
-  html5: siHtml5,
-  javascript: siJavascript,
-  jquery: siJquery,
-  jsonwebtokens: siJsonwebtokens,
-  mongodb: siMongodb,
-  mysql: siMysql,
-  openid: siOpenid,
-  openjdk: siOpenjdk,
-  php: siPhp,
-  postman: siPostman,
-  python: siPython,
-  react: siReact,
-  redis: siRedis,
-  springboot: siSpringboot,
-  swagger: siSwagger,
-  typescript: siTypescript,
-};
 
 const genericIcons: Partial<Record<TechnologyIconId, TechType>> = {
   api: "api",
@@ -66,13 +9,9 @@ const genericIcons: Partial<Record<TechnologyIconId, TechType>> = {
 };
 
 function TechnologyLogo({ technology }: { technology: Skill }) {
-  const icon = brandIcons[technology.icon];
-
-  if (icon) {
-    return <svg className="technology-brand-icon" aria-hidden="true" viewBox="0 0 24 24"><path d={icon.path} /></svg>;
-  }
-
-  return <TechIcon type={genericIcons[technology.icon] ?? "service"} />;
+  const icon = genericIcons[technology.icon];
+  if (icon) return <TechIcon type={icon} />;
+  return <svg className="technology-brand-icon" aria-hidden="true" viewBox="0 0 24 24"><use href={`/technology-icons.svg#${technology.icon}`} /></svg>;
 }
 
 function TechnologyChip({ technology, duplicate }: { technology: Skill; duplicate: boolean }) {
@@ -81,9 +20,7 @@ function TechnologyChip({ technology, duplicate }: { technology: Skill; duplicat
       className="technology-marquee-chip"
       style={{ "--technology-color": technology.color } as CSSProperties}
       role={duplicate ? undefined : "listitem"}
-      tabIndex={duplicate ? -1 : 0}
-      title={technology.context}
-      aria-label={duplicate ? undefined : `${technology.name}: ${technology.context}`}
+      title={duplicate ? undefined : technology.context}
     >
       <span className="technology-marquee-icon"><TechnologyLogo technology={technology} /></span>
       <span>{technology.name}</span>
@@ -91,28 +28,15 @@ function TechnologyChip({ technology, duplicate }: { technology: Skill; duplicat
   );
 }
 
-export function TechnologyMarquee() {
-  const { dictionary } = useI18n();
-  const copy = dictionary.marquee;
-  const skillCategories = useMemo(() => getSkillCategories(dictionary), [dictionary]);
-  const skills = useMemo(() => getSkills(dictionary), [dictionary]);
-  const section = useRef<HTMLElement>(null);
-  const [active, setActive] = useState(false);
+export function TechnologyMarquee({ copy, categories }: { copy: Dictionary["marquee"]; categories: SkillCategory[] }) {
+  const total = categories.reduce((count, category) => count + category.skills.length, 0);
   const rows = [
-    { label: copy.rowOne, technologies: skillCategories.slice(0, 2).flatMap((category) => category.skills) },
-    { label: copy.rowTwo, technologies: skillCategories.slice(2).flatMap((category) => category.skills) },
+    { label: copy.rowOne, technologies: categories.slice(0, 2).flatMap((category) => category.skills) },
+    { label: copy.rowTwo, technologies: categories.slice(2).flatMap((category) => category.skills) },
   ];
 
-  useEffect(() => {
-    const node = section.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting), { rootMargin: "180px 0px" });
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section ref={section} className={`technology-marquee-section ${active ? "is-active" : "is-paused"}`} aria-labelledby="technology-marquee-title">
+    <section className="technology-marquee-section" aria-labelledby="technology-marquee-title" data-animate-when-visible>
       <div className="technology-marquee-heading">
         <div>
           <p className="section-kicker">{copy.kicker}</p>
@@ -120,7 +44,7 @@ export function TechnologyMarquee() {
         </div>
         <div className="technology-marquee-summary">
           <p>{copy.description}</p>
-          <span><strong>{skills.length}</strong> {copy.used}</span>
+          <span><strong>{total}</strong> {copy.used}</span>
         </div>
       </div>
 

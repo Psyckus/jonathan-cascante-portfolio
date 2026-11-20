@@ -1,22 +1,42 @@
 "use client";
 
-import { useI18n } from "../i18n/i18n-provider";
-import type { Locale } from "../i18n/config";
+import { useRouter } from "next/navigation";
+import type { Dictionary, Locale } from "../i18n/config";
+import type { ProjectSlug } from "../lib/projects";
 
-export function LanguageSwitcher() {
-  const { dictionary, locale, setLocale } = useI18n();
+export function LanguageSwitcher({ locale, copy, projectSlug }: { locale: Locale; copy: Dictionary["language"]; projectSlug?: ProjectSlug }) {
+  const router = useRouter();
   const options: Locale[] = ["es", "en"];
 
   return (
-    <div className="language-switcher" role="group" aria-label={dictionary.language.label}>
-      {options.map((option, index) => (
-        <span key={option}>
-          {index > 0 && <i aria-hidden="true" />}
-          <button type="button" className={locale === option ? "active" : ""} aria-pressed={locale === option} aria-label={option === "es" ? dictionary.language.spanish : dictionary.language.english} onClick={() => setLocale(option)}>
-            {dictionary.language[option]}
-          </button>
-        </span>
-      ))}
+    <div className="language-switcher" role="group" aria-label={copy.label}>
+      {options.map((option, index) => {
+        const href = projectSlug ? `/${option}/projects/${projectSlug}/` : `/${option}/`;
+        return (
+          <span key={option}>
+            {index > 0 && <i aria-hidden="true" />}
+            <a
+              href={href}
+              hrefLang={option}
+              lang={option}
+              className={locale === option ? "active" : ""}
+              aria-current={locale === option ? "page" : undefined}
+              aria-label={`${copy[option]} · ${option === "es" ? copy.spanish : copy.english}`}
+              onPointerEnter={(event) => { if (event.pointerType === "mouse" && locale !== option) router.prefetch(href); }}
+              onFocus={() => { if (locale !== option) router.prefetch(href); }}
+              onClick={(event) => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                if (locale === option) return;
+                const { search, hash } = window.location;
+                router.push(`${href}${search}${hash}`, { scroll: false });
+              }}
+            >
+              {copy[option]}
+            </a>
+          </span>
+        );
+      })}
     </div>
   );
 }
