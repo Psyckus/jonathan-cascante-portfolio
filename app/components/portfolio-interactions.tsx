@@ -645,15 +645,14 @@ function TimelineEvent({ item, current }: { item: { date: string; title: string;
   const event = useRef<HTMLLIElement>(null);
   const reduced = useReducedMotion();
   const visible = useInView(event, { once: true, amount: .42, margin: "0px 0px -24% 0px" });
-  const active = Boolean(reduced || visible);
 
   return (
     <m.li
       ref={event}
-      className={`timeline-event ${active ? "active" : ""} ${current ? "current" : ""}`}
+      className={`timeline-event ${visible ? "active" : ""} ${current ? "current" : ""}`}
       aria-current={current ? "step" : undefined}
       initial={false}
-      animate={{ opacity: active ? 1 : .56 }}
+      animate={{ opacity: visible ? 1 : .56 }}
       transition={{ duration: reduced ? 0 : .52, ease: [0.22, 1, 0.36, 1] }}
     >
       <span className="timeline-node" aria-hidden="true">
@@ -669,7 +668,6 @@ function TimelineEvent({ item, current }: { item: { date: string; title: string;
 export function Timeline({ journey }: { journey: Dictionary["academic"]["journey"] }) {
   const timeline = useRef<HTMLOListElement>(null);
   const rail = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
   const [railMetrics, setRailMetrics] = useState({ top: 34, height: 0 });
   const { scrollYProgress } = useScroll({ target: rail, offset: ["start 72%", "end 38%"] });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 110, damping: 27, mass: .4, restDelta: .001 });
@@ -708,12 +706,10 @@ export function Timeline({ journey }: { journey: Dictionary["academic"]["journey
     <div className="timeline-shell">
       <div ref={rail} className="timeline-rail" style={{ top: railMetrics.top, height: railMetrics.height }} aria-hidden="true">
         <span className="timeline-rail-base" />
-        <m.span className="timeline-rail-progress" style={{ scaleY: reduced ? 1 : smoothProgress }} />
-        {!reduced && (
-          <m.span className="timeline-spark" style={{ y: sparkY, opacity: sparkOpacity }}>
-            <i />
-          </m.span>
-        )}
+        <m.span className="timeline-rail-progress" style={{ scaleY: smoothProgress }} />
+        <m.span className="timeline-spark" style={{ y: sparkY, opacity: sparkOpacity }}>
+          <i />
+        </m.span>
       </div>
       <ol ref={timeline} className="timeline">
         {journey.map((item, index) => <TimelineEvent item={item} current={index === journey.length - 1} key={`${item.date}-${item.title}`} />)}

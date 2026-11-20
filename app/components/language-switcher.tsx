@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import type { Dictionary, Locale } from "../i18n/config";
+import { navigateWithLocaleTransition } from "../i18n/locale-transition";
 import type { ProjectSlug } from "../lib/projects";
 
 export function LanguageSwitcher({ locale, copy, projectSlug }: { locale: Locale; copy: Dictionary["language"]; projectSlug?: ProjectSlug }) {
@@ -29,7 +30,9 @@ export function LanguageSwitcher({ locale, copy, projectSlug }: { locale: Locale
                 event.preventDefault();
                 if (locale === option) return;
                 const { search, hash } = window.location;
-                router.push(`${href}${search}${hash}`, { scroll: false });
+                navigateWithLocaleTransition(option, () => {
+                  router.push(`${href}${search}${hash}`, { scroll: false });
+                });
               }}
             >
               {copy[option]}

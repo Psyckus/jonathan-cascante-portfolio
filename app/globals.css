@@ -68,6 +68,18 @@ nav { display: flex; align-items: center; gap: 34px; }
 .language-switcher a.active { color: var(--orange); text-shadow: 0 0 12px rgba(255, 106, 10, .24); }
 .language-switcher a:active { transform: scale(.94); }
 
+.locale-transition-veil { position: fixed; inset: 0; z-index: 1000; pointer-events: none; background: var(--ink); }
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition { pointer-events: none; }
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 220ms;
+    animation-timing-function: ease-in-out;
+  }
+}
+
 .glow-surface { position: relative; isolation: isolate; }
 .glow-surface::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .7; background: radial-gradient(280px circle at var(--mouse-x) var(--mouse-y), rgba(255, 106, 10, .075), transparent 72%); transition: opacity .3s ease; }
 
@@ -1031,5 +1043,7 @@ html[data-motion-profile="reduced-effects"] .game-dpad { animation: none !import
   .technology-marquee-row { overflow-x: auto; padding: 3px 0 9px; mask-image: none; -webkit-mask-image: none; scrollbar-width: thin; scrollbar-color: #354258 transparent; }
   .technology-marquee-track { animation: none !important; transform: none !important; will-change: auto; }
   .technology-marquee-group[aria-hidden="true"] { display: none; }
+  .timeline-rail-progress { transform: none !important; }
+  .timeline-spark { display: none; }
   .timeline-event { opacity: 1 !important; }
 }
