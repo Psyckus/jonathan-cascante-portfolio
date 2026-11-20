@@ -2,9 +2,9 @@
   "seo": {
     "home": {
       "title": "Jonathan Cascante | Desarrollador Full Stack",
-      "description": "Portafolio de Jonathan Cascante: proyectos en C#, .NET, APIs REST y desarrollo web Full Stack desde Costa Rica.",
+      "description": "Portafolio de Jonathan Cascante, desarrollador full stack en Costa Rica. Aplicaciones web, APIs REST y automatización con .NET, Python, PHP y JavaScript.",
       "ogTitle": "Jonathan Cascante | Ingeniería de software Full Stack",
-      "ogDescription": "Proyectos, arquitectura y experiencia construyendo productos web confiables con C#, .NET y APIs REST."
+      "ogDescription": "Proyectos full stack que combinan interfaces web, APIs, integraciones y bases de datos. Explora mi trabajo con .NET, Python, PHP y JavaScript."
     },
     "projects": {
       "casanet": { "title": "Casa Net | Caso de estudio de Jonathan Cascante", "description": "Arquitectura, desafíos y resultados de Casa Net, plataforma inmobiliaria desarrollada con .NET 8." },
@@ -18,18 +18,18 @@
   "hero": {
     "eyebrow": "Full Stack Developer · Costa Rica",
     "headlineStart": "Desarrollo",
-    "headlineIdea": "APIs",
-    "headlineJoin": "y aplicaciones empresariales con",
-    "headlineResult": "C# y .NET.",
-    "role": "C# / .NET · APIs REST · Aplicaciones empresariales",
-    "intro": "Transformo necesidades reales en productos confiables: backend robusto, interfaces claras y una arquitectura preparada para crecer.",
+    "headlineIdea": "aplicaciones web",
+    "headlineJoin": "y APIs de",
+    "headlineResult": "principio a fin.",
+    "role": "Frontend · Backend · Bases de datos",
+    "intro": "Integro sistemas, automatizo procesos y conecto interfaces con servicios y bases de datos.",
     "viewProjects": "Ver proyectos",
     "contactMe": "Contactarme",
     "skillsLabel": "Tecnologías principales",
     "statusLabel": "Estado profesional",
     "available": "Disponible de inmediato",
     "open": "Abierto a oportunidades",
-    "focus": "Backend & APIs",
+    "focus": "Integración de sistemas",
     "easterEgg": "Modo desarrollador desbloqueado · +30 enfoque",
     "panel": {
       "aria": "Sistema backend en vivo",

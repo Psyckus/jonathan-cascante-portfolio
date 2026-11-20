@@ -10,6 +10,7 @@ import { TechnologyMarquee } from "./technology-marquee";
 import { ViewportEffects } from "./viewport-effects";
 
 const email = "jonathan.cz141998@gmail.com";
+const heroTechnologies = ["C# / .NET", "Python / Django", "PHP", "JavaScript / TypeScript", "React", "PostgreSQL / MySQL"];
 
 function ProjectCard({ project, locale, copy, preview }: { project: Project; locale: Locale; copy: Dictionary["projectsSection"]; preview: Dictionary["projectPreviews"] }) {
   const href = `/${locale}/projects/${project.slug}/`;
@@ -150,7 +151,7 @@ export function PortfolioHome({ locale }: { locale: Locale }) {
               <a className="button button-secondary" href={cv} download><DownloadIcon />{dictionary.contact.download}</a>
               <a className="text-link hero-contact" href="#contacto">{dictionary.contact.write}</a>
             </div>
-            <div className="skill-row" aria-label={hero.skillsLabel}>{[".NET 8", "ASP.NET Core", "C#", "MySQL", "JavaScript"].map((skill) => <span className="skill-chip" key={skill}><i aria-hidden="true" /> {skill}</span>)}</div>
+            <div className="skill-row" aria-label={hero.skillsLabel}>{heroTechnologies.map((skill) => <span className="skill-chip" key={skill}><i aria-hidden="true" /> {skill}</span>)}</div>
             <div className="hero-signals" aria-label={hero.statusLabel}><span><StatusDot />{hero.available}</span><span>{hero.open}</span><span>{hero.focus}</span></div>
           </div>
           <HeroCode copy={hero.panel} />

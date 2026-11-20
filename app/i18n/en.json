@@ -2,9 +2,9 @@
   "seo": {
     "home": {
       "title": "Jonathan Cascante | Full Stack Developer",
-      "description": "Jonathan Cascante's portfolio: projects in C#, .NET, REST APIs, and Full Stack web development from Costa Rica.",
+      "description": "Portfolio of Jonathan Cascante, a full-stack developer based in Costa Rica. Web applications, REST APIs, and automation with .NET, Python, PHP, and JavaScript.",
       "ogTitle": "Jonathan Cascante | Full Stack Software Engineering",
-      "ogDescription": "Projects, architecture, and experience building reliable web products with C#, .NET, and REST APIs."
+      "ogDescription": "Full-stack projects that bring together web interfaces, APIs, integrations, and databases. Explore my work with .NET, Python, PHP, and JavaScript."
     },
     "projects": {
       "casanet": { "title": "Casa Net | Jonathan Cascante Case Study", "description": "Architecture, challenges, and results of Casa Net, a real estate platform built with .NET 8." },
@@ -18,18 +18,18 @@
   "hero": {
     "eyebrow": "Full Stack Developer · Costa Rica",
     "headlineStart": "I build",
-    "headlineIdea": "APIs",
-    "headlineJoin": "and business applications with",
-    "headlineResult": "C# and .NET.",
-    "role": "C# / .NET · REST APIs · Enterprise applications",
-    "intro": "I turn real needs into reliable products: robust backends, clear interfaces, and architecture designed to grow.",
+    "headlineIdea": "web applications",
+    "headlineJoin": "and APIs",
+    "headlineResult": "end to end.",
+    "role": "Frontend · Backend · Databases",
+    "intro": "I integrate systems, automate workflows, and connect user interfaces to services and databases.",
     "viewProjects": "View projects",
     "contactMe": "Contact me",
     "skillsLabel": "Main technologies",
     "statusLabel": "Professional status",
     "available": "Available immediately",
     "open": "Open to opportunities",
-    "focus": "Backend & APIs",
+    "focus": "Systems integration",
     "easterEgg": "Developer mode unlocked · +30 focus",
     "panel": {
       "aria": "Live backend system",
