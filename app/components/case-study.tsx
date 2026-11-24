@@ -33,13 +33,14 @@ export function CaseStudy({ locale, projectSlug }: { locale: Locale; projectSlug
   const nextSlug = project.slug === "casanet" ? "ccss" : project.slug === "ccss" ? "api-transferencias" : "casanet";
   return (
     <main className="case-page">
+      <a className="skip-link" href="#main-content">{dictionary.nav.skip}</a>
       <ViewportEffects />
       <div className="case-header-shell"><header className="case-header"><Link className="wordmark" href={`/${locale}/#inicio`}>Jonathan <span>Cascante</span></Link><div className="case-header-actions"><Link className="back-link" href={`/${locale}/#proyectos`}><span>←</span> {copy.back}</Link><LanguageSwitcher locale={locale} copy={dictionary.language} projectSlug={projectSlug} /></div></header></div>
 
       <section className={`case-hero ${project.accent}`}>
         <CaseReveal className="case-hero-copy">
           <p className="project-label">{copy.case} · {project.index}</p>
-          <h1>{project.title}</h1>
+          <h1 id="main-content" tabIndex={-1}>{project.title}</h1>
           <p>{project.description}</p>
           <div className="tag-list">{project.technologies.map((tech) => <span key={tech}>{tech}</span>)}</div>
           <div className="case-actions">

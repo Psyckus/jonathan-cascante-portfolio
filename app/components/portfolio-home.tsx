@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getDictionary, type Dictionary, type Locale } from "../i18n/config";
 import { getProjects, getSkillCategories, type Project } from "../lib/projects";
 import { ArrowIcon, DownloadIcon, ExternalIcon, GitHubIcon, LinkedInIcon } from "./icons";
-import { BeyondCode, CopyEmail, GlowSurface, Header, HeroCode, HomeEffects, PortfolioMotion, ProjectCardFrame, SkillsExplorer, Timeline } from "./portfolio-interactions";
+import { BeyondCode, CopyEmail, GlowSurface, Header, HeroCode, HomeEffects, PortfolioMotion, SkillsExplorer, Timeline } from "./portfolio-interactions";
 import { GitHubActivity, InteractiveTerminal } from "./premium-sections";
 import { ProjectPreview } from "./project-preview";
 import { StatusDot } from "./status-dot";
@@ -16,27 +16,28 @@ function ProjectCard({ project, locale, copy, preview }: { project: Project; loc
   const href = `/${locale}/projects/${project.slug}/`;
   const featured = project.slug === "casanet";
   return (
-    <ProjectCardFrame featured={featured}>
-      <div className={`project-visual ${project.accent}`}>
-        <span>{project.index}</span>
-        <div className="project-mark"><b>{project.mark}</b></div>
-        <div className="preview-reveal"><ProjectPreview type={project.slug} copy={preview} /></div>
-        <div className="visual-lines"><i /><i /><i /></div>
-      </div>
-      <div className="project-content">
-        <p className="project-label">{featured ? copy.featured : project.label}</p>
-        <h3>{project.title}</h3>
-        <p>{project.description}</p>
-        <div className="tag-list" aria-label={`${copy.technologiesFor} ${project.title}`}>
-          {project.technologies.map((technology) => <span key={technology}>{technology}</span>)}
+    <article className={`project-card ${featured ? "featured" : ""}`} data-accent={project.accent} data-reveal>
+      <div className="project-card-layout">
+        <div className="project-visual">
+          <ProjectPreview type={project.slug} copy={preview} />
         </div>
-        <div className="project-actions">
-          <Link className="mini-action primary" href={href} prefetch={false}>{copy.viewProject} <ArrowIcon size={16} /></Link>
-          {project.demoUrl && <a className="mini-action" href={project.demoUrl} target="_blank" rel="noreferrer">{copy.liveDemo} <ExternalIcon size={14} /></a>}
-          <Link className="mini-action" href={`${href}#arquitectura`} prefetch={false}>{copy.architecture}</Link>
+        <div className="project-content">
+          <header>
+            <p className="project-label">{featured ? copy.featured : project.label}</p>
+            <h3>{project.title}</h3>
+          </header>
+          <p>{project.description}</p>
+          <ul className="tag-list" role="list" aria-label={`${copy.technologiesFor} ${project.title}`}>
+            {project.technologies.map((technology) => <li key={technology}><span>{technology}</span></li>)}
+          </ul>
+          <footer className="project-actions">
+            <Link className="mini-action primary" href={href} prefetch={false} aria-label={`${copy.viewProject}: ${project.title}`}>{copy.viewProject}</Link>
+            {project.demoUrl && <a className="mini-action" href={project.demoUrl} target="_blank" rel="noreferrer" aria-label={`${copy.liveDemo}: ${project.title}`}>{copy.liveDemo} <ExternalIcon size={14} /></a>}
+            <Link className="mini-action" href={`${href}#arquitectura`} prefetch={false} aria-label={`${copy.architecture}: ${project.title}`}>{copy.architecture}</Link>
+          </footer>
         </div>
       </div>
-    </ProjectCardFrame>
+    </article>
   );
 }
 
@@ -135,6 +136,7 @@ export function PortfolioHome({ locale }: { locale: Locale }) {
 
   return (
     <main>
+      <a className="skip-link" href="#main-content">{dictionary.nav.skip}</a>
       <ViewportEffects />
       <PortfolioMotion>
         <HomeEffects message={hero.easterEgg} />
@@ -143,7 +145,7 @@ export function PortfolioHome({ locale }: { locale: Locale }) {
         <GlowSurface className="hero" id="inicio">
           <div className="hero-copy">
             <p className="eyebrow"><span />{hero.eyebrow}</p>
-            <h1>{hero.headlineStart} <em>{hero.headlineIdea}</em> {hero.headlineJoin} <em>{hero.headlineResult}</em></h1>
+            <h1 id="main-content" tabIndex={-1}>{hero.headlineStart} <em>{hero.headlineIdea}</em> {hero.headlineJoin} <em>{hero.headlineResult}</em></h1>
             <p className="role">{hero.role.split(" · ").map((part, index, parts) => <span key={part}>{part}{index < parts.length - 1 && <b> · </b>}</span>)}</p>
             <p className="intro">{hero.intro}</p>
             <div className="hero-actions">

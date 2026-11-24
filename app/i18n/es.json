@@ -13,7 +13,7 @@
     }
   },
   "language": { "label": "Seleccionar idioma", "spanish": "Español", "english": "English", "es": "ES", "en": "EN" },
-  "nav": { "label": "Navegación principal", "menu": "Menú", "projects": "Proyectos", "skills": "Habilidades", "experience": "Experiencia", "contact": "Contacto" },
+  "nav": { "label": "Navegación principal", "menu": "Menú", "skip": "Saltar al contenido", "projects": "Proyectos", "skills": "Habilidades", "experience": "Experiencia", "contact": "Contacto" },
   "introMessages": ["Inicializando portafolio...", "Cargando componentes...", "Cargando proyectos...", "Cargando habilidades...", "Listo."],
   "hero": {
     "eyebrow": "Full Stack Developer · Costa Rica",

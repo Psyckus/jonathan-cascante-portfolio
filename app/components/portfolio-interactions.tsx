@@ -192,26 +192,45 @@ function useScrollSpy() {
 export function Header({ locale, copy, language }: { locale: Locale; copy: Dictionary["nav"]; language: Dictionary["language"] }) {
   const { active, compact, activate } = useScrollSpy();
   const reduced = useReducedMotion();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [fallbackOpen, setFallbackOpen] = useState<boolean | null>(null);
   const header = useRef<HTMLElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const menu = useRef<HTMLUListElement>(null);
   const labels = { proyectos: copy.projects, habilidades: copy.skills, experiencia: copy.experience, contacto: copy.contact };
 
   useEffect(() => {
-    if (!menuOpen) return;
+    const list = menu.current;
+    if (!list || typeof list.showPopover !== "function") return;
+    const compactNav = window.matchMedia("(max-width: 760px)");
+    const syncLayout = () => {
+      if (compactNav.matches) {
+        list.setAttribute("popover", "auto");
+      } else {
+        list.removeAttribute("popover");
+      }
+    };
+    syncLayout();
+    compactNav.addEventListener("change", syncLayout);
+    return () => compactNav.removeEventListener("change", syncLayout);
+  }, []);
+
+  useEffect(() => {
+    if (!fallbackOpen) return;
     const closeOutside = (event: PointerEvent) => {
-      if (event.target instanceof Node && !header.current?.contains(event.target)) setMenuOpen(false);
+      if (event.target instanceof Node && !header.current?.contains(event.target)) setFallbackOpen(false);
     };
     document.addEventListener("pointerdown", closeOutside);
     return () => document.removeEventListener("pointerdown", closeOutside);
-  }, [menuOpen]);
+  }, [fallbackOpen]);
 
   function goToSection(event: React.MouseEvent<HTMLAnchorElement>, id: SectionId) {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const section = document.getElementById(id);
     if (!section) return;
     event.preventDefault();
-    setMenuOpen(false);
+    const list = menu.current;
+    if (typeof list?.hidePopover === "function" && list.matches(":popover-open")) list.hidePopover();
+    if (fallbackOpen) setFallbackOpen(false);
     activate(id);
     if (event.detail === 0) {
       const heading = section.querySelector<HTMLElement>("h1, h2");
@@ -228,21 +247,38 @@ export function Header({ locale, copy, language }: { locale: Locale; copy: Dicti
   return (
     <div className={`header-shell ${compact ? "compact" : ""}`}>
       <header ref={header} className="site-header" onKeyDown={(event) => {
-        if (event.key !== "Escape" || !menuOpen) return;
-        setMenuOpen(false);
+        if (event.key !== "Escape" || !fallbackOpen) return;
+        setFallbackOpen(false);
         menuButton.current?.focus();
       }}>
         <a className={`wordmark ${active === "inicio" ? "active" : ""}`} href="#inicio" aria-current={active === "inicio" ? "location" : undefined} onClick={(event) => goToSection(event, "inicio")}>Jonathan <span>Cascante</span>{active === "inicio" && indicator}</a>
         <nav aria-label={copy.label}>
-          <button type="button" ref={menuButton} className="mobile-menu-toggle" aria-expanded={menuOpen} aria-controls="section-menu" onClick={() => setMenuOpen((open) => !open)}>{copy.menu}</button>
-          <div id="section-menu" className="section-menu" data-open={menuOpen}>
+          <button
+            type="button"
+            ref={menuButton}
+            className="mobile-menu-toggle"
+            popoverTarget="section-menu"
+            aria-expanded={fallbackOpen ?? undefined}
+            aria-controls="section-menu"
+            onClick={() => {
+              if (typeof menu.current?.showPopover !== "function") setFallbackOpen((open) => !open);
+            }}
+          >
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M2.5 5.5h11m-11 5h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            {copy.menu}
+          </button>
+          <ul ref={menu} id="section-menu" className="section-menu" popover="auto" data-open={fallbackOpen ?? undefined}>
             {navigationSections.map((id) => (
-              <a key={id} href={`#${id}`} className={active === id ? "active" : ""} aria-current={active === id ? "location" : undefined} onClick={(event) => goToSection(event, id)}>
-                {labels[id]}
-                {active === id && indicator}
-              </a>
+              <li key={id}>
+                <a href={`#${id}`} aria-current={active === id ? "location" : undefined} onClick={(event) => goToSection(event, id)}>
+                  {labels[id]}
+                  {active === id && indicator}
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
           <LanguageSwitcher locale={locale} copy={language} />
         </nav>
       </header>
@@ -480,40 +516,6 @@ export function HeroCode({ copy: panelCopy }: { copy: Dictionary["hero"]["panel"
         </AnimatePresence>
       </div>
     </m.div>
-  );
-}
-
-export function ProjectCardFrame({ children, featured }: { children: ReactNode; featured?: boolean }) {
-  const reduced = useReducedMotion();
-  const card = useRef<HTMLElement>(null);
-  const frame = useRef(0);
-  const onMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (reduced || event.pointerType !== "mouse" || !card.current || document.documentElement.dataset.motionProfile === "reduced-effects") return;
-    const { clientX, clientY } = event;
-    if (frame.current) cancelAnimationFrame(frame.current);
-    frame.current = requestAnimationFrame(() => {
-      if (!card.current) return;
-      const rect = card.current.getBoundingClientRect();
-      const x = (clientX - rect.left) / rect.width - .5;
-      const y = (clientY - rect.top) / rect.height - .5;
-      card.current.style.setProperty("--card-x", `${x * 5}deg`);
-      card.current.style.setProperty("--card-y", `${y * -4}deg`);
-      card.current.style.setProperty("--glow-x", `${clientX - rect.left}px`);
-      card.current.style.setProperty("--glow-y", `${clientY - rect.top}px`);
-    });
-  };
-  const reset = () => {
-    cancelAnimationFrame(frame.current);
-    if (!card.current) return;
-    card.current.style.setProperty("--card-x", "0deg");
-    card.current.style.setProperty("--card-y", "0deg");
-  };
-  useEffect(() => () => cancelAnimationFrame(frame.current), []);
-
-  return (
-    <article ref={card} className={featured ? "project-card featured" : "project-card"} data-reveal onPointerMove={onMove} onPointerLeave={reset}>
-      {children}
-    </article>
   );
 }
 
